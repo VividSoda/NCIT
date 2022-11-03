@@ -276,6 +276,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                             //Send data to firestore
                             await FirestoreService().insertNote(_name.text, _email.text, _password.text, _confirmPass.text);
+                           // FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email.text, password: _password.text).then((value) => null)
 
                             if(result!= null){
                               print("Success");

@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     _screens = [
       const SirenPage(),
       const MapPage(),
-       AddPage('af856712-8514-483d-ad1d-c6605ead85f2',)
+       AddPage()
     ];
   }
 

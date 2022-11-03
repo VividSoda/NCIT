@@ -1,61 +1,71 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:contacts_service/contacts_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 import 'package:rakshak_test/Contacts/contact.class.dart';
 import 'package:rakshak_test/Contacts/select_contact.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 
 import 'contact.preferences.dart';
 
 class AddPage extends StatefulWidget {
-  String idUser='c9b70a0c-070e-493a-a930-a64ea70405f4';
-  AddPage(this.idUser);
-  // AddPage({Key? key,required this.idUser}) : super(key: key);
+  //final String idUser;
+ // AddPage(this.idUser);
+   const AddPage({Key? key}) : super(key: key);
 
   @override
   State<AddPage> createState() => _AddPageState();
 }
 
 class _AddPageState extends State<AddPage> {
-  List<Contact> emergencyContact = [];
+  //List<Contact> emergencyContact = [];
   late Contact contact;
   List<String> recipients = [];
   final player = AudioPlayer();
   bool playing = false;
- late UserContact userContact;
+  UserContact userContact = UserContact();
+ // late UserContact userContact;
+ List<UserContact> userContacts = [];
  // print('####################Id:${id}###############');
+
+  // Future<List<UserContact>> getAllContact() async{
+  //   setState(() {
+  //     userContacts = UserPreferences.getUsers();
+  //   });
+  //   return userContacts;
+  // }
 
   @override
   void initState(){
     super.initState();
-    final id = const Uuid().v4();
-    print('####################Id:${id}###############');
-    // if (widget.idUser==null||widget.idUser=='') {
-    //   print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-    //   print(widget.idUser);
-    //   userContact = UserContact(id: id);
-    //   print('+++####################Id:${userContact.id}###############++++');
-    // }
-    // else {
-      userContact = UserPreferences.getUser(widget.idUser);
-      print('+++++++++++++++++++####${userContact.name}########+++++++');
+    // final id = const Uuid().v4();
+    userContacts = UserPreferences.getUsers();
+   //  print('####################Id:${id}###############');
+   //  if (widget.idUser==null||widget.idUser=='') {
+   //    print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+   //    print(widget.idUser);
+   //    userContact = UserContact(id: id);
+   //    print('+++####################Id:${userContact.id}###############++++');
+   //  }
+   //  else {
+   //    userContact = UserPreferences.getUser(widget.idUser);
+   //    print('+++++++++++++++++++####${userContact.name}########+++++++');
    // }
   }
 
-  addItemToList(){
-    setState(() {
-      emergencyContact.add(contact);
-    });
-  }
-
-  deleteListItem(Contact _contact){
-    setState(() {
-      emergencyContact.remove(_contact);
-    });
-  }
+  // addItemToList(){
+  //   setState(() {
+  //     emergencyContact.add(contact);
+  //   });
+  // }
+  //
+  // deleteListItem(Contact _contact){
+  //   setState(() {
+  //     emergencyContact.remove(_contact);
+  //   });
+  // }
 
   addRecipients(){
     setState(() {
@@ -77,8 +87,9 @@ class _AddPageState extends State<AddPage> {
 
   @override
   Widget build(BuildContext context) {
-    int emergencyContactLength = emergencyContact.length;
-    bool emergencyListExist = (emergencyContact.isNotEmpty);
+    // int emergencyContactLength = emergencyContact.length;
+    // bool emergencyListExist = (emergencyContact.isNotEmpty);
+    int emergencyContactLength = userContacts.length;
 
     return Scaffold(
       backgroundColor: Colors.grey[300],
@@ -107,8 +118,17 @@ class _AddPageState extends State<AddPage> {
               ),
 
               const SizedBox(height: 10),
+
+              // FutureBuilder(
+              //   future: getAllContact(),
+              //     builder: (BuildContext context, AsyncSnapshot <List<UserContact>> snapshot){
+          //        return
+          buildUsers(),
+             // },
+
+              //),
               
-              Text('+++++++++++++++++++++++++++++++++++++${userContact.name}+++++++++++++++++++++++++++++')
+              //Text('+++++++++++++++++++++++++++++++++++++${userContact.name}+++++++++++++++++++++++++++++')
 
               // userContact!=null? ListTile(
               //   title: Text('${userContact!.displayName}'),
@@ -160,27 +180,27 @@ class _AddPageState extends State<AddPage> {
               //     child: const Text("No items added")
               // ),
               //
-              // ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //         primary: Colors.deepPurple
-              //     ),
-              //     onPressed: () async {
-              //       setState(() {
-              //         playing = !playing;
-              //         playing? player.play(AssetSource('Audios/siren.mp3')): player.stop();
-              //       });
-              //       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-              //       String message;
-              //       message = "I might be in danger at this location \n(https://www.google.com/maps/search/?api=1&query=${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}).\nPowered by Rakshak";
-              //       // message = "I might be in danger at this location \n(${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}).\nPlease copy this co-ordinates in Google Maps.\nThis message has been sent by Rakshak";
-              //       // print("I might be in danger at this location (${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}). Please copy this co-ordinates in Google Maps.\n This message has been sent by Rakshak");
-              //       // print("#####################"+sharedPreferences.getDouble("latitude").toString()+"*************************");
-              //       // print("#####################"+sharedPreferences.getDouble("longitude").toString()+"*************************");
-              //       _sendSMS(
-              //           message, recipients);
-              //     },
-              //     child: const Text("Send message")
-              // )
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.deepPurple
+                  ),
+                  onPressed: () async {
+                    setState(() {
+                      playing = !playing;
+                      playing? player.play(AssetSource('Audios/siren.mp3')): player.stop();
+                    });
+                    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                    String message;
+                    message = "I might be in danger at this location \n(https://www.google.com/maps/search/?api=1&query=${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}).\nPowered by Rakshak";
+                    // message = "I might be in danger at this location \n(${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}).\nPlease copy this co-ordinates in Google Maps.\nThis message has been sent by Rakshak";
+                    // print("I might be in danger at this location (${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}). Please copy this co-ordinates in Google Maps.\n This message has been sent by Rakshak");
+                    // print("#####################"+sharedPreferences.getDouble("latitude").toString()+"*************************");
+                    // print("#####################"+sharedPreferences.getDouble("longitude").toString()+"*************************");
+                    _sendSMS(
+                        message, recipients);
+                  },
+                  child: const Text("Send message")
+              )
             ],
           ),
         ),
@@ -194,13 +214,28 @@ class _AddPageState extends State<AddPage> {
                 MaterialPageRoute(builder: (context) => const SelectContactPage())
             );
             setState(() {
-              userContact = userContact.copy(name: contact.displayName);
+              final id = const Uuid().v4();
+              userContact = userContact.copy(id: id,name: contact.displayName,number: contact.phones!.isNotEmpty ? '${contact.phones!.elementAt(0).value}' : '');
               print('!!!!!!!!!!!!!!!!!!!!!!!!${contact.displayName}!!!!!!!!!!!!!!!!!!!');
               print('+++++++++++++++++++id:${userContact.id}+++++++++++++++++++++');
               print('++++++++++++++++++++++name:${userContact.name}++++++++++++++');
             });
+            await UserPreferences.addUser(userContact);
             await UserPreferences.setUser(userContact);
-            addItemToList();
+            setState(() {
+              userContacts = UserPreferences.getUsers();
+            });
+            //final isNewUser = widget.idUser == null||widget.idUser=='';
+            // print('*************************************${isNewUser}***************************');
+            // if(isNewUser){
+            //   await UserPreferences.addUser(userContact);
+            //   await UserPreferences.setUser(userContact);
+            // }
+            // else{
+            //await UserPreferences.addUser(userContact);
+            //await UserPreferences.setUser(userContact);
+            //}
+           // addItemToList();
             addRecipients();
           }
 
@@ -219,4 +254,105 @@ class _AddPageState extends State<AddPage> {
       ),
     );
   }
+
+  Widget buildUsers()
+  {
+    if (userContacts.isEmpty) {
+      return Center(
+        child: Text(
+          'There are no users!',
+          style: TextStyle(fontSize: 24),
+        ),
+      );
+    } else {
+      return Expanded(
+        child: ListView.separated(
+          itemCount: userContacts.length,
+          separatorBuilder: (context, index) => Container(height: 12),
+          itemBuilder: (context, index) {
+            // userContact = UserPreferences.getUser(userContacts[index].id);
+            userContact = userContacts[index];
+            // final user = userContacts[index];
+
+            return ListTile(
+                                  title: Text('${userContact.name}'),
+                                  subtitle: Text('${userContact.number}'),
+                                  leading: CircleAvatar(
+                                    backgroundColor: Colors.deepPurple,
+                                    child: Text(userContact.initials()),
+                                  ),
+                                  // leading: (contact.avatar != null && contact.avatar!.isNotEmpty) ?
+                                  // CircleAvatar(
+                                  //   backgroundImage: MemoryImage(contact.avatar!),
+                                  // ) :
+                                  // CircleAvatar(
+                                  //   backgroundColor: Colors.deepPurple,
+                                    //child: Text(contact.initials()),
+                                  // ),
+                                  trailing: IconButton(
+                                      onPressed: ()async{
+                                        userContact = userContacts[index];
+                                        await UserPreferences.removeUser(userContact);
+                                        setState(() {
+                                          userContacts = UserPreferences.getUsers();
+                                        });
+                                        //deleteListItem(contact);
+                                        //deleteRecipients(contact);
+                                      },
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      )
+                                  ),
+                                 );
+          },
+        ),
+      );
+    }
+  }
+
+  // Widget buildUser(UserContact user) {
+  //   // final imageFile = File(user.imagePath);
+  //     //return Text('########################%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+  //   return ListTile(
+  //                   title: Text('${userContact.name}'),
+  //                   subtitle: Text('${userContact.number}'),
+  //                   leading: CircleAvatar(
+  //                     backgroundColor: Colors.deepPurple,
+  //                     child: Text(userContact.initials()),
+  //                   ),
+  //                   // leading: (contact.avatar != null && contact.avatar!.isNotEmpty) ?
+  //                   // CircleAvatar(
+  //                   //   backgroundImage: MemoryImage(contact.avatar!),
+  //                   // ) :
+  //                   // CircleAvatar(
+  //                   //   backgroundColor: Colors.deepPurple,
+  //                     //child: Text(contact.initials()),
+  //                   // ),
+  //                   // trailing: IconButton(
+  //                   //     onPressed: (){
+  //                   //       contact = emergencyContact[index];
+  //                   //       deleteListItem(contact);
+  //                   //       deleteRecipients(contact);
+  //                   //     },
+  //                   //     icon: const Icon(
+  //                   //       Icons.delete,
+  //                   //       color: Colors.red,
+  //                   //     )
+  //                   // ),
+  //                 );
+  //   //return Text('##################${userContact.name}*******************************');
+  //
+  //   // return ListTile(
+  //   //   tileColor: Colors.white24,
+  //   //   onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+  //   //     builder: (context) => UserPage(idUser: user.id),
+  //   //   )),
+  //   //   leading: user.imagePath.isEmpty
+  //   //       ? null
+  //   //       : CircleAvatar(backgroundImage: FileImage(imageFile)),
+  //   //   title: Text(user.name, style: TextStyle(fontSize: 24)),
+  //   // );
+  // }
 }
+
