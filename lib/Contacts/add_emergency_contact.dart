@@ -1,10 +1,12 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 import 'package:rakshak_test/Contacts/contact.class.dart';
 import 'package:rakshak_test/Contacts/select_contact.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 
@@ -54,6 +56,15 @@ class _AddPageState extends State<AddPage> {
    //    userContact = UserPreferences.getUser(widget.idUser);
    //    print('+++++++++++++++++++####${userContact.name}########+++++++');
    // }
+    loadAllRecipients();
+  }
+
+  loadAllRecipients(){
+    UserContact temp = UserContact();
+    for(int i=0;i<userContacts.length;i++){
+      temp = userContacts[i];
+      recipients.add(temp.number);
+    }
   }
 
   // addItemToList(){
@@ -68,19 +79,19 @@ class _AddPageState extends State<AddPage> {
   //   });
   // }
 
-  // addRecipients(){
-  //   setState(() {
-  //     // recipients.add(contact.phones!.elementAt(0).value.toString());
-  //     recipients.add(userContact.number);
-  //   });
-  // }
-  //
-  // deleteRecipients(UserContact userContact){
-  //   setState(() {
-  //     //recipients.remove(contact.phones!.elementAt(0).value.toString());
-  //     recipients.remove(userContact.number);
-  //   });
-  // }
+  addRecipients(){
+    setState(() {
+      // recipients.add(contact.phones!.elementAt(0).value.toString());
+      recipients.add(userContact.number);
+    });
+  }
+
+  deleteRecipients(UserContact userContact){
+    setState(() {
+      //recipients.remove(contact.phones!.elementAt(0).value.toString());
+      recipients.remove(userContact.number);
+    });
+  }
 
   _sendSMS(String message, List<String> recipients) async{
     await sendSMS(message: message, recipients: recipients).catchError((onError){
@@ -183,32 +194,36 @@ class _AddPageState extends State<AddPage> {
               //     child: const Text("No items added")
               // ),
               //
-              // ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //         primary: Colors.deepPurple
-              //     ),
-              //     onPressed: () async {
-              //       setState(() {
-              //         playing = !playing;
-              //         playing? player.play(AssetSource('Audios/siren.mp3')): player.stop();
-              //       });
-              //       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-              //       FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid).collection('location log').add({
-              //         "location" :
-              //       'https://www.google.com/maps/search/?api=1&query=${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}',
-              //         "date/time" : Timestamp.now()
-              //       });
-              //       String message;
-              //       message = "I might be in danger at this location \n(https://www.google.com/maps/search/?api=1&query=${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}).\nPowered by Rakshak";
-              //       // message = "I might be in danger at this location \n(${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}).\nPlease copy this co-ordinates in Google Maps.\nThis message has been sent by Rakshak";
-              //       // print("I might be in danger at this location (${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}). Please copy this co-ordinates in Google Maps.\n This message has been sent by Rakshak");
-              //       // print("#####################"+sharedPreferences.getDouble("latitude").toString()+"*************************");
-              //       // print("#####################"+sharedPreferences.getDouble("longitude").toString()+"*************************");
-              //       _sendSMS(
-              //           message, recipients);
-              //     },
-              //     child: const Text("Send message")
-              // )
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                    fixedSize: const Size.fromHeight(50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)
+                    )
+                  ),
+                  onPressed: () async {
+                    setState(() {
+                      playing = !playing;
+                      playing? player.play(AssetSource('Audios/siren.mp3')): player.stop();
+                    });
+                    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                    FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid).collection('location log').add({
+                      "location" :
+                    'https://www.google.com/maps/search/?api=1&query=${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}',
+                      "date/time" : Timestamp.now()
+                    });
+                    String message;
+                    message = "I might be in danger at this location \n(https://www.google.com/maps/search/?api=1&query=${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}).\nPowered by Rakshak";
+                    // message = "I might be in danger at this location \n(${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}).\nPlease copy this co-ordinates in Google Maps.\nThis message has been sent by Rakshak";
+                    // print("I might be in danger at this location (${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}). Please copy this co-ordinates in Google Maps.\n This message has been sent by Rakshak");
+                    // print("#####################"+sharedPreferences.getDouble("latitude").toString()+"*************************");
+                    // print("#####################"+sharedPreferences.getDouble("longitude").toString()+"*************************");
+                    _sendSMS(
+                        message, recipients);
+                  },
+                  child: const Text("Send Emergency message")
+              )
             ],
           ),
         ),
@@ -245,7 +260,7 @@ class _AddPageState extends State<AddPage> {
             //await UserPreferences.setUser(userContact);
             //}
            // addItemToList();
-            //addRecipients();
+            addRecipients();
           }
 
           else{
@@ -306,7 +321,7 @@ class _AddPageState extends State<AddPage> {
                                           userContacts = UserPreferences.getUsers();
                                         });
                                         //deleteListItem(contact);
-                                        //deleteRecipients(userContact);
+                                        deleteRecipients(userContact);
                                       },
                                       icon: const Icon(
                                         Icons.delete,
