@@ -1,11 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:rakshak_test/Firebase/auth_service.dart';
 import 'package:rakshak_test/Firebase/verify_mail.dart';
 import 'package:rakshak_test/UI/ForgotPassword.dart';
-
-import 'Home.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -42,7 +39,6 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const SizedBox(height: 50),
 
-                  //Logo
                   const Center(
                     child: CircleAvatar(
                       backgroundColor: Colors.white,
@@ -52,7 +48,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 30),
 
-                  //Login
                   RichText(
                       text: const TextSpan(
                           text: 'Rakshak Log In!',
@@ -64,18 +59,12 @@ class _LoginPageState extends State<LoginPage> {
                       )
                   ),
 
-                 /* Lottie.asset(
-                      "Assets/Animations/security-protection.json", height: 225,
-                      width: 250),*/
-
-
                   const SizedBox(height: 50),
 
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Column(
                       children: [
-                        //Email
                         TextFormField(
                             decoration: InputDecoration(
                               fillColor: Colors.grey[200],
@@ -106,7 +95,6 @@ class _LoginPageState extends State<LoginPage> {
 
                         const SizedBox(height: 20),
 
-                        //Password
                         TextFormField(
                           controller: _password,
                           obscureText: _isPasswordHidden,
@@ -143,7 +131,6 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
 
-                        //Forgot Password??
                         Align(
                           alignment: Alignment.bottomRight,
                           child: TextButton(
@@ -166,7 +153,6 @@ class _LoginPageState extends State<LoginPage> {
 
                         const SizedBox(height: 5),
 
-                        //Login Button
                         _loading? const CircularProgressIndicator() : ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 primary: Colors.deepPurple,
@@ -185,7 +171,6 @@ class _LoginPageState extends State<LoginPage> {
                               User? result = await AuthService().login(_email.text, _password.text, context);
 
                               if(result!=null){
-                                print("Success");
                                 Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(builder: (context) => const VerifyMailPage()),

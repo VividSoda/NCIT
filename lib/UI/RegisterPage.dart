@@ -14,12 +14,10 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
-  DateTime _date = DateTime.now();
   bool _isPasswordHidden = true;
   bool _isConfirmPasswordHidden = true;
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmPass = TextEditingController();
-  final TextEditingController _dob = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _name = TextEditingController();
   bool _loading = false;
@@ -47,7 +45,6 @@ class _RegisterPageState extends State<RegisterPage> {
         children: [
           const SizedBox(height: 30),
 
-          //Logo
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: Center(
@@ -96,7 +93,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Column(
                  children: [
 
-                   //Name
                    TextFormField(
                      validator: (value){
                        if (value!.isEmpty) {
@@ -119,7 +115,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
                    const SizedBox(height: 10),
 
-                   //Email or Phone
                    TextFormField(
                      controller: _email,
                      decoration: InputDecoration(
@@ -148,13 +143,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
                    const SizedBox(height: 10),
 
-                   //Password
                    TextFormField(
                      obscureText: _isPasswordHidden,
                      decoration: InputDecoration(
                        filled: true,
                        fillColor: Colors.grey[200],
-                       //prefix: const Icon(Icons.lock),
                          suffixIcon: IconButton(
                            onPressed: (){
                              setState(() {
@@ -187,7 +180,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
                    const SizedBox(height: 10),
 
-                   //Confirm Password
                    TextFormField(
                      controller: _confirmPass,
                      validator: (value){
@@ -207,7 +199,6 @@ class _RegisterPageState extends State<RegisterPage> {
                      decoration: InputDecoration(
                        fillColor: Colors.grey[200],
                        filled: true,
-                       //prefix: const Icon(Icons.lock),
                          suffixIcon: IconButton(
                            onPressed: (){
                              setState(() {
@@ -224,47 +215,8 @@ class _RegisterPageState extends State<RegisterPage> {
                              borderRadius: BorderRadius.circular(15))),
                    ),
 
-                  /*const SizedBox(height: 20),
-
-                  //DOB
-                  TextFormField(
-                    controller: _dob,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15)
-                      ),
-                      hintText: "Date of Birth",
-                      labelText: "Date of Birth",
-                      prefixIcon: IconButton(
-                          onPressed: () async {
-                            DateTime? newDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(1950),
-                                lastDate: DateTime(2030)
-                            );
-
-                            //if cancel
-                            if (newDate == null){
-                              return;
-                            }
-
-                            else{
-                              setState(() {
-                                _date = newDate;
-                                _dob.text = "${_date.year}/${_date.month}/${_date.day}";
-                              });
-                            }
-                          },
-                          icon:const Icon(
-                            Icons.calendar_month_outlined
-                          ))
-                    ),
-                  ),*/
-
                   const SizedBox(height: 10),
 
-                   //Register Button
                   _loading? const CircularProgressIndicator() : ElevatedButton(
                      style: ElevatedButton.styleFrom(
                        primary: Colors.deepPurple,
@@ -276,15 +228,6 @@ class _RegisterPageState extends State<RegisterPage> {
                          _loading = true;
                        });
                           if (_formKey.currentState!.validate()){
-                              /*Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const LoginPage())
-                              );*/
-                            // User? result =  await AuthService().register(_email.text, _password.text,context);
-                            //
-                            // //Send data to firestore
-                            // await FirestoreService().insertNote(_name.text, _email.text, _password.text, _confirmPass.text);
                             FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email.text, password: _password.text).then((value) {
                               FirebaseFirestore.instance.collection('users').doc(value.user!.uid).set({
                                 "name" : _name.text,
@@ -311,15 +254,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                   )
                               );
                             });
-
-                            // if(result!= null){
-                            //   print("Success");
-                            //   Navigator.pushAndRemoveUntil(
-                            //       context,
-                            //       MaterialPageRoute(builder: (context) => LoginPage()),
-                            //           (route) => false
-                            //   );
-                            // }
                           }
 
                           setState(() {
@@ -333,7 +267,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
                    const SizedBox(height: 20),
 
-                   //OR
                    Row(
                      children: const [
                        Expanded(
@@ -360,7 +293,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
                    const SizedBox(height: 15),
 
-                   //Continue with Google
                   _loading? const CircularProgressIndicator() : SignInButton(
                        Buttons.Google,
                        text: "Continue with Google",
