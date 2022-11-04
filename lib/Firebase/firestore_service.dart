@@ -10,7 +10,6 @@ class FirestoreService{
         "email" : _email,
         "password" : _password,
         "confirm password" : _confirmPass,
-        //"date of birth" : _dob,
       }
       );
     }
