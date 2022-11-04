@@ -32,19 +32,6 @@ class _SirenPageState extends State<SirenPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // ElevatedButton(
-              //     onPressed: () async{
-              //       await player.play(AssetSource('Audios/siren.mp3'));
-              //     },
-              //     child:const Text('Play Siren')
-              // ),
-              // //Stop Siren
-              // ElevatedButton(
-              //     onPressed: (){
-              //       player.stop();
-              //     },
-              //     child:const Text('Stop Siren')
-              // ),
               Center(
                 child: GestureDetector(
                   child: Lottie.asset(
@@ -74,21 +61,6 @@ class _SirenPageState extends State<SirenPage> {
                   },
                   child:const Text('Siren')
               ),
-
-              // ElevatedButton(
-              //     onPressed: (){
-              //
-              //     },
-              //     child:const Text('Stop Siren')
-              // ),
-
-              // Center(
-              //   child: CircleAvatar(
-              //     radius: 110,
-              //     backgroundImage: AssetImage('Assets/Images/siren_logo.jpg'),
-              //   ),
-              // ),
-              //Image.asset('Assets/Images/siren_logo.jpg')
             ],
           ),
         ),
