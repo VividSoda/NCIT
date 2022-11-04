@@ -77,7 +77,6 @@ class _SelectContactPageState extends State<SelectContactPage> {
   @override
   Widget build(BuildContext context) {
     bool isSearching = searchController.text.isNotEmpty;
-    //print(isSearching);
     bool listItemsExist = (filteredContacts.isNotEmpty||!isSearching);
 
     return Scaffold(
