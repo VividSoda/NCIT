@@ -4,6 +4,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sms/flutter_sms.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rakshak_test/Contacts/contact.class.dart';
 import 'package:rakshak_test/Contacts/select_contact.dart';
 import 'package:rakshak_test/Message/customize_message.dart';
@@ -60,6 +61,7 @@ class _AddPageState extends State<AddPage> {
   }
 
   _sendSMS(String message, List<String> recipients) async{
+    await Permission.sms.request();
     await sendSMS(message: message, recipients: recipients).catchError((onError){
       print(onError);
     });
@@ -123,7 +125,16 @@ class _AddPageState extends State<AddPage> {
                       "message" : customizeMessage ?? defaultMessage
                     });
                     _sendSMS(
-                        message, recipients);
+                        message, recipients
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text(
+                                'Message Successful'
+                            ),
+                            backgroundColor: Colors.green
+                        )
+                    );
                   },
                   child: const Text("Send Emergency Message")
               ),
@@ -158,7 +169,16 @@ class _AddPageState extends State<AddPage> {
                       "message" : customizeMessage ?? defaultMessage
                     });
                     _sendSMS(
-                        message, recipients);
+                        message, recipients
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text(
+                                'Message Successful'
+                            ),
+                            backgroundColor: Colors.green
+                        )
+                    );
                   },
                   child: const Text("Send Emergency Message with Siren")
               ),

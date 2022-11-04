@@ -30,6 +30,9 @@ class _SelectContactPageState extends State<SelectContactPage> {
         filterContacts();
       });
     }
+    else{
+      return null;
+    }
   }
 
   String flattenPhoneNumber(String phoneStr) {
