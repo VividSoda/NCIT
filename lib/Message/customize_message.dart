@@ -29,11 +29,6 @@ class _CustomizeMessagePageState extends State<CustomizeMessagePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // CircleAvatar(
-              //   radius: 50,
-              //     backgroundImage: Image
-              //     //Image.asset('Assets/Logos/robbery.png'),
-              // )
               GestureDetector(
                 child: Container(
                   height: 80,
@@ -49,7 +44,6 @@ class _CustomizeMessagePageState extends State<CustomizeMessagePage> {
                 ),
                 onTap: (){
                   Navigator.pop(context,"Robbery nearby ");
-                  print('Robbery nearby ');
                 },
               ),
 
@@ -70,7 +64,6 @@ class _CustomizeMessagePageState extends State<CustomizeMessagePage> {
                 ),
                 onTap: (){
                   Navigator.pop(context,"I am stuck without fuel ");
-                  print('I am stuck without fuel ');
                 },
               ),
 
@@ -91,7 +84,6 @@ class _CustomizeMessagePageState extends State<CustomizeMessagePage> {
                 ),
                 onTap: (){
                   Navigator.pop(context,"I might be in a brawl ");
-                  print('I might be in a brawl ');
                 },
               ),
 
@@ -112,7 +104,6 @@ class _CustomizeMessagePageState extends State<CustomizeMessagePage> {
                 ),
                 onTap: (){
                   Navigator.pop(context,"Suspicious person nearby ");
-                  print('Suspicious person nearby ');
                 },
               ),
             ],
