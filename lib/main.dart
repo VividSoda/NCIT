@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:rakshak_test/Contacts/add_emergency_contact.dart';
 import 'package:rakshak_test/Contacts/contact.preferences.dart';
 import 'package:rakshak_test/UI/Home.dart';
 import 'package:rakshak_test/UI/LoginPage.dart';
@@ -30,10 +29,10 @@ class MyApp extends StatelessWidget {
         stream: AuthService().firebaseAuth.authStateChanges(),
           builder: (context, snapshot){
           if(snapshot.hasData){
-            return  const HomePage();
+            return const HomePage();
           }
-          
           return const MyHomePage(title: "Rakshak");
+          //return const MyHomePage(title: "Rakshak");
           })
     );
   }

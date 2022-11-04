@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rakshak_test/UI/LoginPage.dart';
@@ -272,20 +273,29 @@ class _RegisterPageState extends State<RegisterPage> {
                                   MaterialPageRoute(
                                       builder: (context) => const LoginPage())
                               );*/
-                            User? result =  await AuthService().register(_email.text, _password.text,context);
-
-                            //Send data to firestore
-                            await FirestoreService().insertNote(_name.text, _email.text, _password.text, _confirmPass.text);
-                           // FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email.text, password: _password.text).then((value) => null)
-
-                            if(result!= null){
-                              print("Success");
-                              Navigator.pushAndRemoveUntil(
+                            // User? result =  await AuthService().register(_email.text, _password.text,context);
+                            //
+                            // //Send data to firestore
+                            // await FirestoreService().insertNote(_name.text, _email.text, _password.text, _confirmPass.text);
+                            FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email.text, password: _password.text).then((value) {
+                              FirebaseFirestore.instance.collection('users').doc(value.user!.uid).set({
+                                "name" : _name.text,
+                                "email" : _email.text,
+                              }).then((value) => Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(builder: (context) => LoginPage()),
                                       (route) => false
-                              );
-                            }
+                              ));
+                            });
+
+                            // if(result!= null){
+                            //   print("Success");
+                            //   Navigator.pushAndRemoveUntil(
+                            //       context,
+                            //       MaterialPageRoute(builder: (context) => LoginPage()),
+                            //           (route) => false
+                            //   );
+                            // }
                           }
 
                           setState(() {

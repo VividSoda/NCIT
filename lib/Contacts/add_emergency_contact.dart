@@ -1,10 +1,10 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 import 'package:rakshak_test/Contacts/contact.class.dart';
 import 'package:rakshak_test/Contacts/select_contact.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 
@@ -28,6 +28,7 @@ class _AddPageState extends State<AddPage> {
   UserContact userContact = UserContact();
  // late UserContact userContact;
  List<UserContact> userContacts = [];
+ FirebaseAuth _auth = FirebaseAuth.instance;
  // print('####################Id:${id}###############');
 
   // Future<List<UserContact>> getAllContact() async{
@@ -67,17 +68,19 @@ class _AddPageState extends State<AddPage> {
   //   });
   // }
 
-  addRecipients(){
-    setState(() {
-      recipients.add(contact.phones!.elementAt(0).value.toString());
-    });
-  }
-
-  deleteRecipients(Contact contact){
-    setState(() {
-      recipients.remove(contact.phones!.elementAt(0).value.toString());
-    });
-  }
+  // addRecipients(){
+  //   setState(() {
+  //     // recipients.add(contact.phones!.elementAt(0).value.toString());
+  //     recipients.add(userContact.number);
+  //   });
+  // }
+  //
+  // deleteRecipients(UserContact userContact){
+  //   setState(() {
+  //     //recipients.remove(contact.phones!.elementAt(0).value.toString());
+  //     recipients.remove(userContact.number);
+  //   });
+  // }
 
   _sendSMS(String message, List<String> recipients) async{
     await sendSMS(message: message, recipients: recipients).catchError((onError){
@@ -180,27 +183,32 @@ class _AddPageState extends State<AddPage> {
               //     child: const Text("No items added")
               // ),
               //
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.deepPurple
-                  ),
-                  onPressed: () async {
-                    setState(() {
-                      playing = !playing;
-                      playing? player.play(AssetSource('Audios/siren.mp3')): player.stop();
-                    });
-                    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                    String message;
-                    message = "I might be in danger at this location \n(https://www.google.com/maps/search/?api=1&query=${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}).\nPowered by Rakshak";
-                    // message = "I might be in danger at this location \n(${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}).\nPlease copy this co-ordinates in Google Maps.\nThis message has been sent by Rakshak";
-                    // print("I might be in danger at this location (${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}). Please copy this co-ordinates in Google Maps.\n This message has been sent by Rakshak");
-                    // print("#####################"+sharedPreferences.getDouble("latitude").toString()+"*************************");
-                    // print("#####################"+sharedPreferences.getDouble("longitude").toString()+"*************************");
-                    _sendSMS(
-                        message, recipients);
-                  },
-                  child: const Text("Send message")
-              )
+              // ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //         primary: Colors.deepPurple
+              //     ),
+              //     onPressed: () async {
+              //       setState(() {
+              //         playing = !playing;
+              //         playing? player.play(AssetSource('Audios/siren.mp3')): player.stop();
+              //       });
+              //       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+              //       FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid).collection('location log').add({
+              //         "location" :
+              //       'https://www.google.com/maps/search/?api=1&query=${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}',
+              //         "date/time" : Timestamp.now()
+              //       });
+              //       String message;
+              //       message = "I might be in danger at this location \n(https://www.google.com/maps/search/?api=1&query=${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}).\nPowered by Rakshak";
+              //       // message = "I might be in danger at this location \n(${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}).\nPlease copy this co-ordinates in Google Maps.\nThis message has been sent by Rakshak";
+              //       // print("I might be in danger at this location (${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}). Please copy this co-ordinates in Google Maps.\n This message has been sent by Rakshak");
+              //       // print("#####################"+sharedPreferences.getDouble("latitude").toString()+"*************************");
+              //       // print("#####################"+sharedPreferences.getDouble("longitude").toString()+"*************************");
+              //       _sendSMS(
+              //           message, recipients);
+              //     },
+              //     child: const Text("Send message")
+              // )
             ],
           ),
         ),
@@ -213,13 +221,14 @@ class _AddPageState extends State<AddPage> {
                 context,
                 MaterialPageRoute(builder: (context) => const SelectContactPage())
             );
-            setState(() {
+            // setState(() {
               final id = const Uuid().v4();
               userContact = userContact.copy(id: id,name: contact.displayName,number: contact.phones!.isNotEmpty ? '${contact.phones!.elementAt(0).value}' : '');
               print('!!!!!!!!!!!!!!!!!!!!!!!!${contact.displayName}!!!!!!!!!!!!!!!!!!!');
               print('+++++++++++++++++++id:${userContact.id}+++++++++++++++++++++');
               print('++++++++++++++++++++++name:${userContact.name}++++++++++++++');
-            });
+              print('++++++++++++++++++++++number:${userContact.number}++++++++++++++');
+            // });
             await UserPreferences.addUser(userContact);
             await UserPreferences.setUser(userContact);
             setState(() {
@@ -236,7 +245,7 @@ class _AddPageState extends State<AddPage> {
             //await UserPreferences.setUser(userContact);
             //}
            // addItemToList();
-            addRecipients();
+            //addRecipients();
           }
 
           else{
@@ -297,7 +306,7 @@ class _AddPageState extends State<AddPage> {
                                           userContacts = UserPreferences.getUsers();
                                         });
                                         //deleteListItem(contact);
-                                        //deleteRecipients(contact);
+                                        //deleteRecipients(userContact);
                                       },
                                       icon: const Icon(
                                         Icons.delete,

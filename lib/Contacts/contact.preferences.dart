@@ -18,7 +18,7 @@ class UserPreferences{
     await _preferences.setString(idUser, json);
   }
 
-  static UserContact getUser(String idUser){
+  static  UserContact getUser(String idUser){
     print('///////////////Get User/////////////');
     final json = _preferences.getString(idUser);
     return UserContact.formJSON(jsonDecode(json!));
@@ -32,7 +32,7 @@ class UserPreferences{
   }
 
   static Future removeUser(UserContact userContact) async{
-    print('///////////////Add User/////////////');
+    print('///////////////Remove User/////////////');
     final idUsers = _preferences.getStringList(_keyUsers)??<String>[];
     final newIdUsers = List.of(idUsers)..remove(userContact.id);
     await _preferences.setStringList(_keyUsers, newIdUsers);

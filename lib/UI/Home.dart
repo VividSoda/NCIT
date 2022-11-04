@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     _screens = [
       const SirenPage(),
       const MapPage(),
-       AddPage()
+       const AddPage()
     ];
   }
 
