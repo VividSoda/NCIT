@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rakshak_test/Firebase/auth_service.dart';
+import 'package:rakshak_test/Firebase/verify_mail.dart';
 import 'package:rakshak_test/UI/ForgotPassword.dart';
 
 import 'Home.dart';
@@ -187,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                                 print("Success");
                                 Navigator.pushAndRemoveUntil(
                                     context,
-                                    MaterialPageRoute(builder: (context) => HomePage()),
+                                    MaterialPageRoute(builder: (context) => const VerifyMailPage()),
                                         (route) => false
                                 );
                               }
