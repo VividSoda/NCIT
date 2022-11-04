@@ -21,6 +21,13 @@ class _LoginPageState extends State<LoginPage> {
   bool _loading = false;
 
   @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],

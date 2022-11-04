@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:rakshak_test/UI/LoginPage.dart';
 import 'package:rakshak_test/Firebase/auth_service.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:rakshak_test/Firebase/firestore_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -24,6 +23,15 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _name = TextEditingController();
   bool _loading = false;
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _email.dispose();
+    _password.dispose();
+    _confirmPass.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -283,9 +291,25 @@ class _RegisterPageState extends State<RegisterPage> {
                                 "email" : _email.text,
                               }).then((value) => Navigator.pushAndRemoveUntil(
                                   context,
-                                  MaterialPageRoute(builder: (context) => LoginPage()),
+                                  MaterialPageRoute(builder: (context) => const LoginPage()),
                                       (route) => false
-                              ));
+                              )).onError((error, stackTrace)async{
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(error.toString()),
+                                      backgroundColor: Colors.red,
+                                    )
+                                );
+                              });
+                            }).onError((error, stackTrace)async{
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          error.toString()
+                                      ),
+                                      backgroundColor: Colors.red
+                                  )
+                              );
                             });
 
                             // if(result!= null){
