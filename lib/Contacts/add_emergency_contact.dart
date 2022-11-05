@@ -62,7 +62,7 @@ class _AddPageState extends State<AddPage> {
 
   _sendSMS(String message, List<String> recipients) async{
     await Permission.sms.request();
-    await sendSMS(message: message, recipients: recipients).catchError((onError){
+    await sendSMS(message: message, recipients: recipients,sendDirect: true).catchError((onError){
       print(onError);
     });
   }
