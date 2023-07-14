@@ -3,21 +3,17 @@ import 'package:intl/intl.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Models/Patient/patientUploadedReport.dart';
 import 'package:flutter/material.dart';
-
 class PatientUploadedReportCard extends StatelessWidget {
   final PatientUploadedReport patientUploadedReport;
   final bool sameDate;
   const PatientUploadedReportCard({Key? key, required this.patientUploadedReport, required this.sameDate}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     String formattedDate = DateFormat("d MMMM yyyy").format(patientUploadedReport.dateCreated);
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          //Time and Dotted line
           if(!sameDate)
             Row(
               children: [
@@ -37,11 +33,8 @@ class PatientUploadedReportCard extends StatelessWidget {
                 )
               ],
             ),
-
           if(!sameDate)
           const SizedBox(height: 20),
-
-          //Report Card
           Stack(
             children: [
               Container(
@@ -67,9 +60,7 @@ class PatientUploadedReportCard extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ),
-
                     const SizedBox(width: 20),
-
                     Column(
                       crossAxisAlignment:
                       CrossAxisAlignment.start,
@@ -83,9 +74,7 @@ class PatientUploadedReportCard extends StatelessWidget {
                               color: Colors.white
                           ),
                         ),
-
                         const SizedBox(height: 5),
-
                         Text(
                           patientUploadedReport.contact,
                           style: const TextStyle(

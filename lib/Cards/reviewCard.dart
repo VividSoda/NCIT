@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Models/reviewModel.dart';
-
 class ReviewCard extends StatelessWidget {
   final ReviewModel review;
   const ReviewCard({Key? key, required this.review}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,19 +18,9 @@ class ReviewCard extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(20),
             color: Colors.white,
-            // boxShadow: [
-            //   BoxShadow(
-            //       color: Colors.black.withOpacity(0.2),
-            //       offset: const Offset(0, 3),
-            //       blurRadius: 6.0,
-            //       spreadRadius: 2.0
-            //   )
-            //]
         ),
-
-        child: Column(
+          child: Column(
           children: [
-            //User Details
             Row(
               children: [
                CircleAvatar(
@@ -43,9 +31,7 @@ class ReviewCard extends StatelessWidget {
                     'assets/patientImages/patient.png',
                   ),
                 ),
-
                 const SizedBox(width: 10),
-
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -57,10 +43,7 @@ class ReviewCard extends StatelessWidget {
                         color: primary
                       ),
                     ),
-
                     const SizedBox(width: 5),
-
-                    //Rating Bar
                     RatingBar.builder(
                         allowHalfRating: true,
                         ignoreGestures: true,
@@ -85,10 +68,7 @@ class ReviewCard extends StatelessWidget {
                 )
               ],
             ),
-
             const SizedBox(height: 10),
-
-            //reviews
             Text(
               review.review,
               style: const TextStyle(

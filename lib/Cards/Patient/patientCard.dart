@@ -3,11 +3,9 @@ import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Doctor/globalPatientReport.dart';
 import 'package:umbrella_care/Models/Patient/patientModel.dart';
 import 'package:umbrella_care/Doctor/otherPatientReport.dart';
-
 class PatientCard extends StatelessWidget {
   final PatientInfo patient;
   const PatientCard({Key? key, required this.patient}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +24,6 @@ class PatientCard extends StatelessWidget {
           )
         ],
       ),
-
       child: Row(
         children: [
           Container(
@@ -40,14 +37,8 @@ class PatientCard extends StatelessWidget {
             ) : Image.asset(
                   'assets/patientImages/patient.png'
               ),
-            // Image.asset(
-            //   'assets/patientImages/patient.png',
-            //   fit: BoxFit.cover,
-            // ),
           ),
-
           const SizedBox(width: 10),
-
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -60,9 +51,7 @@ class PatientCard extends StatelessWidget {
                   color: Color(0xFF5E1A84),
                 ),
               ),
-
               const SizedBox(height: 5),
-
               Text(
                 patient.contact,
                 style: const TextStyle(
@@ -71,14 +60,11 @@ class PatientCard extends StatelessWidget {
                   color: Color(0xFF5E1A84),
                 ),
               ),
-
               const SizedBox(height: 5),
-
               InkWell(
                 onTap: (){
                   Navigator.push(
                       context,
-                      // MaterialPageRoute(builder: (context) => OtherPatientReport(patientId: patient.uid))
                       MaterialPageRoute(builder: (context) => GlobalPatientReport(patientId: patient.uid))
                   );
                 },

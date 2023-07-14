@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Models/Hospital/hospitalModel.dart';
-
 class HospitalCard extends StatelessWidget {
   final HospitalModel hospital;
   const HospitalCard({Key? key, required this.hospital}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +22,6 @@ class HospitalCard extends StatelessWidget {
           )
         ],
       ),
-
       child: Row(
         children: [
           SizedBox(
@@ -38,9 +35,7 @@ class HospitalCard extends StatelessWidget {
               ),
             ),
           ),
-
           const SizedBox(width: 10),
-
           Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,35 +46,30 @@ class HospitalCard extends StatelessWidget {
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontSize: 22,
+                    fontSize: 21,
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF5E1A84),
                   ),
                 ),
-
                 const SizedBox(height: 5),
-
                 Text(
                   hospital.specialization,
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFF5E1A84),
                   ),
                 ),
-
                 const SizedBox(height: 5),
-
-                //location
                 Text(
                   hospital.location,
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,
                   style: const TextStyle(
                       fontWeight: FontWeight.w400,
-                      fontSize: 14,
+                      fontSize: 13,
                       color: primary
                   ),
                 ),

@@ -2,21 +2,16 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Models/Patient/doctorAppointmentInfo.dart';
-
 class DoctorAppointmentCard extends StatelessWidget {
   final DoctorAppointmentInfo appointment;
   const DoctorAppointmentCard({Key? key, required this.appointment}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    print('${appointment.imgUrl}[][][]][][');
     final String formattedTime = '${appointment.bookedTime} : 00 ${appointment.bookedTime > 11 ? "PM" : "AM"}';
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          //Time and Dotted line
           Row(
             children: [
               Text(
@@ -34,10 +29,7 @@ class DoctorAppointmentCard extends StatelessWidget {
               )
             ],
           ),
-
           const SizedBox(height: 20),
-
-          //Appointment Card
           Stack(
             children: [
               Container(
@@ -63,9 +55,7 @@ class DoctorAppointmentCard extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     const SizedBox(width: 20),
-
                     Column(
                       crossAxisAlignment:
                       CrossAxisAlignment.start,
@@ -78,9 +68,7 @@ class DoctorAppointmentCard extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               color: Colors.white),
                         ),
-
                         const SizedBox(height: 5),
-
                         Text(
                           'Dr. ${appointment.name}',
                           style: const TextStyle(
@@ -88,9 +76,7 @@ class DoctorAppointmentCard extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                               color: Colors.white),
                         ),
-
                         const SizedBox(height: 5),
-
                         Text(
                           appointment.speciality,
                           softWrap: true,

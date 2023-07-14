@@ -3,22 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Models/Doctor/doctorUploadedReport.dart';
-
+String latestResponse = "no";
 class DoctorUploadedReportCard extends StatelessWidget {
   final DoctorUploadedReport doctorUploadedReport;
   final bool sameDate;
   const DoctorUploadedReportCard({Key? key, required this.doctorUploadedReport, required this.sameDate}) : super(key: key);
-
-
   @override
   Widget build(BuildContext context) {
     String formattedDate = DateFormat("d MMMM yyyy").format(doctorUploadedReport.dateCreated);
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          //Time and Dotted line
           if(!sameDate)
             Row(
               children: [
@@ -37,11 +33,8 @@ class DoctorUploadedReportCard extends StatelessWidget {
                 )
               ],
             ),
-
           if(!sameDate)
           const SizedBox(height: 20),
-
-          //Report Card
           Stack(
             children: [
               Container(
@@ -67,42 +60,40 @@ class DoctorUploadedReportCard extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     const SizedBox(width: 20),
-
-                    Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Dr. ${doctorUploadedReport.name}',
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white),
-                        ),
-
-                        const SizedBox(height: 5),
-
-                        Text(
-                          doctorUploadedReport.affiliation,
-                          style: const TextStyle(
-                              fontSize: 19,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white),
-                        ),
-
-                        const SizedBox(height: 5),
-
-                        Text(
-                          doctorUploadedReport.specialization,
-                          style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white),
-                        ),
-                      ],
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Dr. ${doctorUploadedReport.name}',
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            doctorUploadedReport.affiliation,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                fontSize: 19,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            doctorUploadedReport.specialization,
+                            style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
                     )
                   ],
                 ),

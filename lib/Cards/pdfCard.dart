@@ -3,21 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Models/pdfModel.dart';
-
 class PdfCard extends StatelessWidget {
   final PdfModel pdfModel;
   final bool sameDate;
   const PdfCard({Key? key, required this.pdfModel, required this.sameDate}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     String formattedDate = DateFormat("d MMMM yyyy").format(pdfModel.dateCreated);
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: Column(
         children: [
-          //Time and Dotted line
           if(!sameDate)
           Row(
             children: [
@@ -37,10 +33,8 @@ class PdfCard extends StatelessWidget {
               )
             ],
           ),
-
           if(!sameDate)
           const SizedBox(height: 20),
-
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             width: MediaQuery.of(context).size.width,
@@ -56,9 +50,7 @@ class PdfCard extends StatelessWidget {
                   color: primary,
                   size: 25,
                 ),
-
                 const SizedBox(width: 5),
-
                 Text(
                   pdfModel.name,
                   style: const TextStyle(
