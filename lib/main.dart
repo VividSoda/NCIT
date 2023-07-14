@@ -7,17 +7,13 @@ import 'package:umbrella_care/AuthUI/login_page.dart';
 import 'package:umbrella_care/AuthUI/patientRegistration.dart';
 import 'package:umbrella_care/AuthUI/selectionScreen.dart';
 import 'package:umbrella_care/splashScreen.dart';
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return  const MaterialApp(
@@ -25,17 +21,6 @@ class MyApp extends StatelessWidget {
         KhaltiLocalizations.delegate
       ],
       debugShowCheckedModeBanner: false,
-      // home: StreamBuilder<User?>(
-      //     stream: FirebaseAuth.instance.authStateChanges(),
-      //     builder: (context, snapshot) {
-      //       if(snapshot.hasData){
-      //         return const PatientHome();
-      //       }
-      //       else{
-      //         return const SelectionPage();
-      //       }
-      //     }
-      // ),
       home:  SplashScreen(),
     );
   }

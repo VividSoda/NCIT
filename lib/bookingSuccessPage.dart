@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/navBar.dart';
-
 class BookingSuccesPage extends StatelessWidget {
   const BookingSuccesPage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,10 +31,7 @@ class BookingSuccesPage extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 40),
-
-              //back to home page
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 56,

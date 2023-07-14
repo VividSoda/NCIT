@@ -4,9 +4,7 @@ import 'package:umbrella_care/Cards/checkBoxOptions.dart';
 import 'package:umbrella_care/Payment/Khalti/khaltiTest.dart';
 import 'package:umbrella_care/Payment/esewa/esewaTest.dart';
 import 'package:umbrella_care/Payment/Khalti/khaltiScopePage.dart';
-
 import '../Constants/colors.dart';
-
 class PaymentOptions extends StatefulWidget {
   final String uid;
   const PaymentOptions({Key? key, required this.uid}) : super(key: key);
@@ -14,10 +12,8 @@ class PaymentOptions extends StatefulWidget {
   @override
   State<PaymentOptions> createState() => _PaymentOptionsState();
 }
-
 class _PaymentOptionsState extends State<PaymentOptions> {
   String selectedOption = '';
-
   @override
   Widget build(BuildContext context) {
         return Scaffold(
@@ -28,8 +24,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 30),
-
-                  //Back Button
                   Row(
                     children: [
                       Container(
@@ -49,9 +43,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           ),
                         ),
                       ),
-
                       const SizedBox(width: 60),
-
                       const Text(
                         'Payment Method',
                         style: TextStyle(
@@ -62,9 +54,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       )
                     ],
                   ),
-
                   const SizedBox(height: 30),
-
                   const Text(
                     'Select Option',
                     style: TextStyle(
@@ -73,10 +63,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                         color: primary
                     ),
                   ),
-
                   const SizedBox(height: 10),
-
-                  //esewa
                   CheckboxOption(
                     optionText: 'esewa',
                     optionImage: 'assets/payment/esewa.png',
@@ -87,8 +74,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       });
                     },
                   ),
-
-                  //Khalti
                   CheckboxOption(
                     optionText: 'Khalti',
                     optionImage: 'assets/payment/Khalti.png',
@@ -99,10 +84,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       });
                     },
                   ),
-
                   const SizedBox(height: 50),
-
-                  //Continue Button
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: 56,
@@ -114,7 +96,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                               MaterialPageRoute(builder: (context) => const EsewaTest())
                           );
                         }
-
                         if(selectedOption == 'Khalti'){
                           Navigator.push(
                               context,

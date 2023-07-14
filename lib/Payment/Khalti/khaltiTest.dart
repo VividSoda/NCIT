@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/bookingSuccessPage.dart';
-
 class KhaltiTest extends StatelessWidget {
   const KhaltiTest({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
    return Scaffold(
@@ -14,8 +12,6 @@ class KhaltiTest extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 30),
-
-              //Back Button
               Row(
                 children: [
                   Container(
@@ -35,9 +31,7 @@ class KhaltiTest extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(width: 60),
-
                   const Text(
                     'Khalti Payment',
                     style: TextStyle(
@@ -48,16 +42,11 @@ class KhaltiTest extends StatelessWidget {
                   )
                 ],
               ),
-
               const SizedBox(height: 200),
-
               Image.asset(
                   'assets/payment/Khalti.png'
               ),
-
               const SizedBox(height: 20),
-
-              //Pay with Khalti Button
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 56,

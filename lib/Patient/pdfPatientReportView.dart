@@ -6,120 +6,67 @@ import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Models/Patient/patientUploadedReport.dart';
 import 'package:umbrella_care/Models/pdfModel.dart';
 import 'package:umbrella_care/Utils/pdfViewer.dart';
-
 class PdfPatientReportView extends StatefulWidget {
   final PatientUploadedReport patientUploadedReport;
   const PdfPatientReportView({Key? key, required this.patientUploadedReport}) : super(key: key);
-
   @override
   State<PdfPatientReportView> createState() => _PdfPatientReportViewState();
 }
-
 class _PdfPatientReportViewState extends State<PdfPatientReportView> {
   List<PdfModel> pdfList = [];
   bool _isLoading = true;
-
-  // //get download url
-  // static Future<String?> getDownloadUrl(String destination) async {
-  //   try {
-  //     final ref = FirebaseStorage.instance.ref(destination);
-  //
-  //     final downloadUrl = await ref.getDownloadURL();
-  //     return downloadUrl;
-  //   } catch (FirebaseException) {
-  //     return null;
-  //   }
-  // }
-
-  //get records ids form patients uploaded by doctor
   Future<List<PdfModel>> getPdfInfo() async{
     List<PdfModel> records = [];
-
     String patientId = widget.patientUploadedReport.patientId;
-    
     final document = FirebaseFirestore.instance.collection('patients').doc(patientId).collection('self uploaded records');
-
     QuerySnapshot snapshot = await document.get();
-
     for (var doc in snapshot.docs) {
       Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
-
       List<dynamic> list = data!['record ids'];
-
       List<String> patientRecords = list.cast<String>();
-      print('^^^^^^^^^^^^');
-      print(patientRecords);
-
-      //get record details form records collection
       for(int i = 0; i < patientRecords.length; i++){
-        print(patientRecords[i]+'&&&&&&&&&&&');
-
         Map<String,String> pdfDetails = await fetchPdf(patientRecords[i]);
-
         String dateString = pdfDetails['date']!;
-
-
         PdfModel pdfModel = PdfModel(
             name: pdfDetails['name']!,
             path: pdfDetails['path']!,
             url: pdfDetails['url']!,
             dateCreated: DateTime.parse(dateString)
         );
-
         records.add(pdfModel);
       }
     }
     return records;
   }
-
-  //get record details form records collection
   Future<Map<String, String>> fetchPdf(String recordId) async{
-    print('fetchPdf45555555555555555');
     final record = FirebaseFirestore.instance.collection('records').doc(recordId);
-
     DocumentSnapshot<Map<String, dynamic>> snapshot = await record.get();
     Map<String, dynamic> data = snapshot.data()!;
-
-    if(snapshot.exists){
-      print('exists---------------');
-    }
-
     String name = data['name'];
     String path = data['record path'];
-
     final reference = FirebaseStorage.instance.ref().child(path);
-
     String url = await reference.getDownloadURL();
-
     String date = data['date created'];
-
     return {'name' : name, 'path' : path, 'url' : url, 'date' : date};
   }
-
-  //assign records list
   Future<void> fetchReports() async {
-    print('reports fetched++++++++');
     List<PdfModel> fetchedPdfs = await getPdfInfo();
     setState(() {
       pdfList = fetchedPdfs;
       _isLoading = false;
     });
   }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fetchReports();
   }
-
-  // Compare only the date fields of two DateTime variables
   bool isSameDate(DateTime date1, DateTime date2) {
     return date1.year == date2.year &&
         date1.month == date2.month &&
         date1.day == date2.day;
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,7 +91,6 @@ class _PdfPatientReportViewState extends State<PdfPatientReportView> {
         ),
       ),
     ),
-
       body: SafeArea(
         child: Padding(
             padding: const EdgeInsets.all(20),
@@ -157,7 +103,6 @@ class _PdfPatientReportViewState extends State<PdfPatientReportView> {
                   DateTime date1 = pdfList[index-1].dateCreated;
                   DateTime date2 = pdfList[index].dateCreated;
                   bool sameDate = isSameDate(date1,date2);
-
                   return GestureDetector(
                     onTap: (){
                       Navigator.push(
@@ -171,7 +116,6 @@ class _PdfPatientReportViewState extends State<PdfPatientReportView> {
                     ),
                   );
                 }
-
                 return GestureDetector(
                   onTap: (){
                     Navigator.push(

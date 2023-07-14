@@ -7,14 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Firebase/firebaseStorage.dart';
 import 'package:umbrella_care/Patient/patientReport.dart';
-
 class UploadRecord extends StatefulWidget {
   const UploadRecord({Key? key}) : super(key: key);
-
   @override
   State<UploadRecord> createState() => _UploadRecordState();
 }
-
 class _UploadRecordState extends State<UploadRecord> {
   String? _name;
   String? _contact;
@@ -25,23 +22,16 @@ class _UploadRecordState extends State<UploadRecord> {
   File? _reportToDisplay;
   final patientId = FirebaseAuth.instance.currentUser!.uid;
   String _imgUrl = '';
-
-  //get user details form firebase
   Future<DocumentSnapshot<Map<String, dynamic>>?> fetchPatientDetails() async {
     final userDoc = FirebaseFirestore.instance.collection('patients').doc(patientId);
-
     DocumentSnapshot<Map<String, dynamic>> snapshot = await userDoc.get();
-
     if(snapshot.exists){
       Map<String, dynamic> data = snapshot.data()!;
-
       _name = data['name'];
       _contact = data['contact'];
-
       if(data.containsKey('img url')){
         _imgUrl = data['img url'];
       }
-
       setState(() {
         _isLoading = false;
       });
@@ -49,8 +39,6 @@ class _UploadRecordState extends State<UploadRecord> {
     }
     return null;
   }
-
-  //Select File
   Future<void> pickFile() async{
     try{
       _report = await FilePicker.platform.pickFiles(
@@ -58,7 +46,6 @@ class _UploadRecordState extends State<UploadRecord> {
           allowedExtensions: ['pdf', 'doc'],
           allowMultiple: false
       );
-
       if(_report!=null){
         _reportName = _report!.files.first.name;
         setState(() {
@@ -66,18 +53,14 @@ class _UploadRecordState extends State<UploadRecord> {
         });
         _reportToDisplay = File(_pickedReport!.path.toString());
       }
-
       else {
         return;
       }
     }
-
     catch(e){
       print(e);
     }
   }
-
-  //Upload File
   Future<void> uploadFile() async{
     DateTime dateTime = DateTime.now();
     if(_reportToDisplay==null) return;
@@ -89,14 +72,12 @@ class _UploadRecordState extends State<UploadRecord> {
     //Add Records to Firebase
     FirebaseApi.submitRecordsSelf(patientId, destination);
   }
-
   @override
   void initState() {
     // TODO: implement initState
     fetchPatientDetails();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,8 +104,6 @@ class _UploadRecordState extends State<UploadRecord> {
               ) : Column(
                 children: [
                   const SizedBox(height: 50),
-
-                  //Back Button
                   Row(
                     children: [
                       Container(
@@ -144,9 +123,7 @@ class _UploadRecordState extends State<UploadRecord> {
                           ),
                         ),
                       ),
-
                       const SizedBox(width: 60),
-
                       const Text(
                         'Upload Record',
                         style: TextStyle(
@@ -157,10 +134,7 @@ class _UploadRecordState extends State<UploadRecord> {
                       )
                     ],
                   ),
-
                   const SizedBox(height: 30),
-
-                  //Profile Container
                   Align(
                     alignment: Alignment.center,
                     child: Stack(
@@ -192,10 +166,7 @@ class _UploadRecordState extends State<UploadRecord> {
                         ]
                     ),
                   ),
-
                   const SizedBox(height: 30),
-
-                  //Name
                   Text(
                     _name!,
                     style: const TextStyle(
@@ -204,10 +175,7 @@ class _UploadRecordState extends State<UploadRecord> {
                         color: Color(0xFF5E1A84)
                     ),
                   ),
-
                   const SizedBox(height: 10),
-
-                  //Contact
                   Text(
                     _contact!,
                     style: const TextStyle(
@@ -216,9 +184,7 @@ class _UploadRecordState extends State<UploadRecord> {
                         color: Color(0xFF5E1A84)
                     ),
                   ),
-
                   SizedBox(height: MediaQuery.of(context).size.height*0.14),
-
                   Container(
                     width: 264,
                     height: 168,
@@ -274,9 +240,7 @@ class _UploadRecordState extends State<UploadRecord> {
                             ),
                           ),
                         ),
-
                         const SizedBox(height: 10),
-
                         const Text(
                           'Upload',
                           style: TextStyle(
@@ -288,19 +252,10 @@ class _UploadRecordState extends State<UploadRecord> {
                       ],
                     ),
                   ),
-
-                  // if(_pickedFile!=null)
-                  //   SizedBox(
-                  //     height: 300,
-                  //     width: 300,
-                  //     child: Image.file(_fileToDisplay!),
-                  //   )
                 ],
               ),
             ),
           ),
-
-          //Book now button
           Positioned(
             bottom: 0,
             left: 0,
@@ -323,13 +278,11 @@ class _UploadRecordState extends State<UploadRecord> {
                               )
                           )
                       );
-
                       Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const PatientReport())
                       );
                     }
-
                     else{
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

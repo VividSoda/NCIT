@@ -3,19 +3,14 @@ import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Payment/paymentOptions.dart';
 import 'package:umbrella_care/navBar.dart';
-
 class KhaltiView extends StatefulWidget {
   final String uid;
   const KhaltiView({Key? key, required this.uid}) : super(key: key);
-
   @override
   State<KhaltiView> createState() => _KhaltiViewState();
 }
-
 class _KhaltiViewState extends State<KhaltiView> {
   String referenceId = "";
-
-  //Khalti Pay
   payWithKhalti(){
     KhaltiScope.of(context).pay(
         config: PaymentConfig(
@@ -31,8 +26,6 @@ class _KhaltiViewState extends State<KhaltiView> {
         onCancel: onCancel
     );
   }
-
-  //On Success method of Khalti
   void onSuccess(PaymentSuccessModel success){
     showDialog(
         context: context,
@@ -47,10 +40,6 @@ class _KhaltiViewState extends State<KhaltiView> {
                       context,
                     MaterialPageRoute(builder: (context) => const NavBar())
                   );
-                  // setState(() {
-                  //   referenceId = success.idx;
-                  // });
-                  print('success+++++pay');
                 },
               )
             ],
@@ -58,20 +47,14 @@ class _KhaltiViewState extends State<KhaltiView> {
         }
     );
   }
-
-  //On Failure method of Khalti
   void onFailure(PaymentFailureModel failure){
     debugPrint(failure.toString());
   }
-
-  //On Cancel method of Khalti
   void onCancel(){
     debugPrint('Cancelled');
   }
-
   @override
   Widget build(BuildContext context) {
-    print(widget.uid+'^^^^^^^^^^^^^^^^');
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -81,8 +64,6 @@ class _KhaltiViewState extends State<KhaltiView> {
               Column(
                 children: [
                   const SizedBox(height: 30),
-
-                  //Back Button
                   Row(
                     children: [
                       Container(
@@ -105,9 +86,7 @@ class _KhaltiViewState extends State<KhaltiView> {
                           ),
                         ),
                       ),
-
                       const SizedBox(width: 60),
-
                       const Text(
                         'Khalti Payment',
                         style: TextStyle(
@@ -120,7 +99,6 @@ class _KhaltiViewState extends State<KhaltiView> {
                   ),
                 ],
               ),
-
               Positioned(
                 top: MediaQuery.of(context).size.height*0.4,
                 // left: MediaQuery.of(context).size.width*0.25,
@@ -129,9 +107,7 @@ class _KhaltiViewState extends State<KhaltiView> {
                     Image.asset(
                         'assets/payment/Khalti.png'
                     ),
-
                     const SizedBox(height: 20),
-
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 56,
