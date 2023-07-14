@@ -4,6 +4,7 @@ import 'package:umbrella_care/Cards/Doctor/doctorCard.dart';
 import 'package:umbrella_care/Models/Doctor/doctorAverageReview.dart';
 import 'package:umbrella_care/Models/Doctor/doctorModel.dart';
 import 'package:umbrella_care/Patient/doctorDetails.dart';
+import 'package:umbrella_care/Patient/filterCategories.dart';
 
 class DoctorSearch extends StatefulWidget {
   const DoctorSearch({Key? key}) : super(key: key);
@@ -17,8 +18,10 @@ class _DoctorSearchState extends State<DoctorSearch> {
   List<DoctorInfo> filteredDoctors =  [];
   bool _isLoading = true;
   final TextEditingController _searchController = TextEditingController();
-  List<DoctorAverageReview> reviews = [];
-  List<DoctorAverageReview> filteredReviews = [];
+  // List<DoctorAverageReview> reviews = [];
+  // List<DoctorAverageReview> filteredReviews = [];
+  bool _isCategorySelected = false;
+  String _category = '';
 
   //get all doctor list from firebase
   Future<List<DoctorInfo>> getDoctorsFromFirebase() async {
@@ -42,9 +45,20 @@ class _DoctorSearchState extends State<DoctorSearch> {
         String specialization = data['specialization'];
         bool validity = data['validity'];
         String imgUrl = '';
+
         if(data.containsKey('img url')){
           imgUrl = data['img url'];
         }
+
+        double averageRating = 0;
+        int noOfReviews = 0;
+
+        if(data.containsKey('averageRating')){
+          dynamic avg = data['averageRating'];
+          averageRating = avg.toDouble();
+          noOfReviews = data['noOfReviews'];
+        }
+
         DoctorInfo doctorInfo = DoctorInfo(
             uid: uid,
             name: name,
@@ -55,13 +69,22 @@ class _DoctorSearchState extends State<DoctorSearch> {
             experience: experience,
             specialization: specialization,
             validity: validity,
-          imgUrl: imgUrl
+          imgUrl: imgUrl,
+          avgRating: averageRating,
+          noOfReviews: noOfReviews
         );
         doctors.add(doctorInfo);
       }
     }
     return doctors;
   }
+
+  // //get review details
+  // Future<Map<String,String>> getReviewDetails(String docId){
+  //   String noOfReviews;
+  //   String avgRating;
+  //   return
+  // }
 
   //assign doctor list
   Future<void> fetchDoctors() async {
@@ -143,33 +166,33 @@ class _DoctorSearchState extends State<DoctorSearch> {
     return reviews;
   }
 
-  //assign review data
-  Future<void> assignReviewData() async {
-    List<DoctorAverageReview> fetchedReviews = await getReviewData();
-    setState(() {
-      reviews = fetchedReviews;
-    });
-  }
-
-  // Search function
-  void filterReviews() {
-    String searchTerm = _searchController.text.toLowerCase();
-    setState(() {
-      filteredReviews = reviews
-          .where((review) => review.specialization.toLowerCase().contains(searchTerm))
-          .toList();
-    });
-  }
+  // //assign review data
+  // Future<void> assignReviewData() async {
+  //   List<DoctorAverageReview> fetchedReviews = await getReviewData();
+  //   setState(() {
+  //     reviews = fetchedReviews;
+  //   });
+  // }
+  //
+  // // Search function
+  // void filterReviews() {
+  //   String searchTerm = _searchController.text.toLowerCase();
+  //   setState(() {
+  //     filteredReviews = reviews
+  //         .where((review) => review.specialization.toLowerCase().contains(searchTerm))
+  //         .toList();
+  //   });
+  // }
 
   //fetch data
   void fetchData() async{
-    await assignReviewData();
+    // await assignReviewData();
     fetchDoctors();
   }
 
   //filter data
   void filterData() {
-    filterReviews();
+    // filterReviews();
     filterDoctors();
   }
 
@@ -254,11 +277,21 @@ class _DoctorSearchState extends State<DoctorSearch> {
                           //filterDoctors();
                           filterData();
                         },
+                        enabled: !_isCategorySelected,
                       ),
                     ),
                     IconButton(
                         onPressed: () {
-
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const FilterCategories())
+                          ).then((category) {
+                            print(category+'--------------');
+                            setState(() {
+                              _category = category;
+                              _isCategorySelected = true;
+                            });
+                          });
                         },
                         icon: Image.asset(
                             'assets/logos/Filter.png'
@@ -328,7 +361,13 @@ class _DoctorSearchState extends State<DoctorSearch> {
                           child: Padding(
                             padding:
                             const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                            child:isSearching? DoctorCard(doctor: filteredDoctors[index], review: filteredReviews[index],) : DoctorCard(doctor: doctors[index], review: reviews[index]),
+                            child:isSearching? DoctorCard(
+                              doctor: filteredDoctors[index],
+                              //review: filteredReviews[index]
+                            ) : DoctorCard(
+                                doctor: doctors[index],
+                                //review: reviews[index]
+                            ),
                           ),
                         );
                       },
