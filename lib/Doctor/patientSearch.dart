@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:umbrella_care/Cards/Patient/patientCard.dart';
 import 'package:umbrella_care/Doctor/patientInformation.dart';
-import 'package:umbrella_care/Models/Doctor/doctorModel.dart';
 import 'package:umbrella_care/Models/Patient/patientModel.dart';
 
 class PatientSearch extends StatefulWidget {
@@ -13,43 +12,34 @@ class PatientSearch extends StatefulWidget {
 }
 
 class _PatientSearchState extends State<PatientSearch> {
-  List<PatientInfo> patients =  [];
-  List<PatientInfo> filteredPatients =  [];
+  List<PatientInfo> patients = [];
+  List<PatientInfo> filteredPatients = [];
   bool _isLoading = true;
   final TextEditingController _searchController = TextEditingController();
 
-  //get all patients list from firebase
   Future<List<PatientInfo>> getPatientsFromFirebase() async {
     List<PatientInfo> patients = [];
-
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('patients').get();
+    QuerySnapshot snapshot =
+        await FirebaseFirestore.instance.collection('patients').get();
 
     for (var patient in snapshot.docs) {
       Map<String, dynamic>? data = patient.data() as Map<String, dynamic>?;
-      // bool validity = data!['validity'];
-
-      if(data!.containsKey('validity')) {
-        print(patient.id);
+      if (data!.containsKey('validity')) {
         String uid = patient.id;
         String name = data!['name'];
         String contact = data['contact'];
         String imgUrl = '';
-        if(data.containsKey('img url')){
+        if (data.containsKey('img url')) {
           imgUrl = data['img url'];
         }
-        PatientInfo patientInfo = PatientInfo(
-          uid: uid,
-          name: name,
-          contact: contact,
-          imgUrl: imgUrl
-        );
+        PatientInfo patientInfo =
+            PatientInfo(uid: uid, name: name, contact: contact, imgUrl: imgUrl);
         patients.add(patientInfo);
       }
     }
     return patients;
   }
 
-  //assign patient list
   Future<void> fetchPatients() async {
     List<PatientInfo> fetchedPatients = await getPatientsFromFirebase();
     setState(() {
@@ -58,7 +48,6 @@ class _PatientSearchState extends State<PatientSearch> {
     });
   }
 
-  // Search function
   void filterPatients() {
     String searchTerm = _searchController.text.toLowerCase();
     setState(() {
@@ -78,17 +67,13 @@ class _PatientSearchState extends State<PatientSearch> {
   @override
   Widget build(BuildContext context) {
     bool isSearching = _searchController.text.isNotEmpty;
-    bool listItemsExist = (filteredPatients.isNotEmpty||!isSearching);
-
-
+    bool listItemsExist = (filteredPatients.isNotEmpty || !isSearching);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             const SizedBox(height: 50),
-
-            //Back Button
             Row(
               children: [
                 Container(
@@ -96,48 +81,36 @@ class _PatientSearchState extends State<PatientSearch> {
                   height: 44,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(15)
-                  ),
+                      borderRadius: BorderRadius.circular(15)),
                   child: IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    icon: const Icon(
-                        Icons.arrow_back,
-                        color: Color(0xFF5E1A84)
-                    ),
+                    icon:
+                        const Icon(Icons.arrow_back, color: Color(0xFF5E1A84)),
                   ),
                 ),
-
                 const SizedBox(width: 60),
-
                 const Text(
                   'Search Patients',
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF5E1A84)
-                  ),
+                      color: Color(0xFF5E1A84)),
                 )
               ],
             ),
-
             const SizedBox(height: 30),
-
-            //Search
             Container(
               width: MediaQuery.of(context).size.width,
               height: 56,
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                      color: const Color(0xFF5E1A84)
-                  )
-              ),
+                  border: Border.all(color: const Color(0xFF5E1A84))),
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 5, horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 child: Row(
                   children: [
                     Expanded(
@@ -150,8 +123,7 @@ class _PatientSearchState extends State<PatientSearch> {
                             ),
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none
-                        ),
+                            disabledBorder: InputBorder.none),
                         controller: _searchController,
                         onChanged: (value) {
                           filterPatients();
@@ -159,20 +131,13 @@ class _PatientSearchState extends State<PatientSearch> {
                       ),
                     ),
                     IconButton(
-                        onPressed: () {
-
-                        },
-                        icon: Image.asset(
-                            'assets/logos/Filter.png'
-                        )
-                    ),
+                        onPressed: () {},
+                        icon: Image.asset('assets/logos/Filter.png')),
                   ],
                 ),
               ),
             ),
-
             const SizedBox(height: 20),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -181,16 +146,11 @@ class _PatientSearchState extends State<PatientSearch> {
                   style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF5E1A84)
-                  ),
+                      color: Color(0xFF5E1A84)),
                 ),
-
                 const Spacer(),
-
                 InkWell(
-                  onTap: (){
-
-                  },
+                  onTap: () {},
                   child: const Text(
                     'See All',
                     style: TextStyle(
@@ -198,56 +158,71 @@ class _PatientSearchState extends State<PatientSearch> {
                         decoration: TextDecoration.underline,
                         fontWeight: FontWeight.w400,
                         decorationThickness: 1,
-                        fontSize: 14
-                    ),
+                        fontSize: 14),
                   ),
                 )
               ],
             ),
-
-            //Patient List
-            _isLoading? const Padding(
-              padding: EdgeInsets.all(20),
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ) : Expanded(
-              child: SingleChildScrollView(
-                child: listItemsExist? Column(
-                  children: [
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount:isSearching? filteredPatients.length : patients.length ,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: (){
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => PatientInformation(uid: isSearching? filteredPatients[index].uid : patients[index].uid))
-                            );
-                          },
-                          child: Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                            child:isSearching? PatientCard(patient: filteredPatients[index]) : PatientCard(patient: patients[index]),
-                          ),
-                        );
-                      },
+            _isLoading
+                ? const Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Center(
+                      child: CircularProgressIndicator(),
                     ),
-                  ],
-                ) : const Center(
-                  child: Text(
-                    'No results found',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF5E1A84)
+                  )
+                : Expanded(
+                    child: SingleChildScrollView(
+                      child: listItemsExist
+                          ? Column(
+                              children: [
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: isSearching
+                                      ? filteredPatients.length
+                                      : patients.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PatientInformation(
+                                                        uid: isSearching
+                                                            ? filteredPatients[
+                                                                    index]
+                                                                .uid
+                                                            : patients[index]
+                                                                .uid)));
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 10),
+                                        child: isSearching
+                                            ? PatientCard(
+                                                patient:
+                                                    filteredPatients[index])
+                                            : PatientCard(
+                                                patient: patients[index]),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            )
+                          : const Center(
+                              child: Text(
+                                'No results found',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF5E1A84)),
+                              ),
+                            ),
                     ),
                   ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
