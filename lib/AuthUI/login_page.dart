@@ -2,17 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:umbrella_care/AuthUI/selectionScreen.dart';
 import 'package:umbrella_care/AuthUI/forgotPassword.dart';
-import 'package:umbrella_care/Doctor/doctorHome.dart';
 import 'package:umbrella_care/navBar.dart';
-import 'package:umbrella_care/Patient/patientHome.dart';
-
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
-
 class _LoginPageState extends State<LoginPage> {
   bool _patientPress = true;
   bool _doctorPress = false;
@@ -21,13 +16,8 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-
   Future login() async{
-   print('Login');
-   print(_email.text+'%%%%%%%%%%%%%%%%%%%%%%');
-
-
-   try{
+    try{
      await FirebaseAuth.instance.signInWithEmailAndPassword(
          email: _email.text,
          password: _password.text
@@ -40,7 +30,6 @@ class _LoginPageState extends State<LoginPage> {
                )
            )
        );
-
        Navigator.push(
            context,
            MaterialPageRoute(
@@ -49,11 +38,8 @@ class _LoginPageState extends State<LoginPage> {
        );
      });
    }
-
-  on FirebaseAuthException catch(e){
+   on FirebaseAuthException catch(e){
      if(e.code == 'user-not-found'){
-        print('User not found');
-
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 backgroundColor: Colors.red,
@@ -63,10 +49,7 @@ class _LoginPageState extends State<LoginPage> {
             )
         );
      }
-
      else if(e.code == 'wrong-password'){
-       print('Password Incorrect!!!');
-
        ScaffoldMessenger.of(context).showSnackBar(
            const SnackBar(
                backgroundColor: Colors.red,
@@ -76,130 +59,11 @@ class _LoginPageState extends State<LoginPage> {
            )
        );
      }
-
      else{
        print(e.message);
      }
   }
   }
-
-//  patientLogin() async{
-//    print('Patient Login');
-//    print(_email.text+'%%%%%%%%%%%%%%%%%%%%%%');
-//
-//
-//    try{
-//      await FirebaseAuth.instance.signInWithEmailAndPassword(
-//          email: _email.text,
-//          password: _password.text
-//      ).then((value) {
-//        ScaffoldMessenger.of(context).showSnackBar(
-//            const SnackBar(
-//                backgroundColor: Colors.green,
-//                content: Text(
-//                  'Login Successful',
-//                )
-//            )
-//        );
-//      });
-//
-//      Navigator.push(
-//          context,
-//        MaterialPageRoute(
-//            builder: (context) => const PatientHome()
-//        )
-//      );
-//    }
-//
-//   on FirebaseAuthException catch(e){
-//      if(e.code == 'user-not-found'){
-//         print('User not found');
-//
-//         ScaffoldMessenger.of(context).showSnackBar(
-//             const SnackBar(
-//                 backgroundColor: Colors.red,
-//                 content: Text(
-//                   'User not found',
-//                 )
-//             )
-//         );
-//      }
-//
-//      else if(e.code == 'wrong-password'){
-//        print('Password Incorrect!!!');
-//
-//        ScaffoldMessenger.of(context).showSnackBar(
-//            const SnackBar(
-//                backgroundColor: Colors.red,
-//                content: Text(
-//                  'Password Incorrect!!!',
-//                )
-//            )
-//        );
-//      }
-//
-//      else{
-//        print(e.message);
-//      }
-//   }
-// }
-
-  // doctorLogin() async{
-  //  print('Doctor Login');
-  //
-  //   try{
-  //     await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //         email: _email.text,
-  //         password: _password.text
-  //     ).then((value)  {
-  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //           backgroundColor: Colors.green,
-  //           content: Text(
-  //             'Login Successful',
-  //           )));
-  //     });
-  //
-  //     Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //             builder: (context) => const DoctorHome()
-  //         )
-  //     );
-  //   }
-  //
-  //   on FirebaseAuthException catch(e) {
-  //     if (e.code == 'user-not-found') {
-  //       print('User not found');
-  //
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //           const SnackBar(
-  //               backgroundColor: Colors.red,
-  //               content: Text(
-  //                 'User not found',
-  //               )
-  //           )
-  //       );
-  //     }
-  //
-  //     else if (e.code == 'wrong-password') {
-  //       print('Password Incorrect!!!');
-  //
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //           const SnackBar(
-  //               backgroundColor: Colors.red,
-  //               content: Text(
-  //                 'Password Incorrect!!!',
-  //               )
-  //           )
-  //       );
-  //     }
-  //
-  //     else{
-  //       print(e.message);
-  //     }
-  //   }
-  // }
-
   @override
   void dispose() {
     // TODO: implement dispose
@@ -207,7 +71,6 @@ class _LoginPageState extends State<LoginPage> {
     _password.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -222,8 +85,6 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 100),
-
-                    //Umbrella Care Text
                     const Align(
                       alignment: Alignment.center,
                       child: Text(
@@ -235,10 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 40),
-
-                    //Selection Button
                     Container(
                       padding: const EdgeInsets.all(3),
                       width: MediaQuery.of(context).size.width,
@@ -278,7 +136,6 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
-
                           Expanded(
                             flex: 1,
                             child: GestureDetector(
@@ -311,18 +168,12 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                     ),
-
                     const SizedBox(height: 30),
-
-                    //Email Text
                     const Align(
                         alignment: Alignment.centerLeft,
                         child: Text('Email address')
                     ),
-
                     const SizedBox(height: 8),
-
-                    //Email Field
                     TextFormField(
                       validator: (value){
                         bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value!);
@@ -357,18 +208,12 @@ class _LoginPageState extends State<LoginPage> {
 
                       ),
                     ),
-
                     const SizedBox(height: 20),
-
-                    //Password Text
                     const Align(
                         alignment: Alignment.centerLeft,
                         child: Text('Password')
                     ),
-
                     const SizedBox(height: 8),
-
-                    //Password Field
                     TextFormField(
                       validator: (value){
                         if(value!.isEmpty){
@@ -411,10 +256,7 @@ class _LoginPageState extends State<LoginPage> {
                           )
                       ),
                     ),
-
                     const SizedBox(height: 10),
-
-                    //Forgot Password
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
@@ -432,24 +274,14 @@ class _LoginPageState extends State<LoginPage> {
                           )
                       ),
                     ),
-
                     const SizedBox(height: 20),
-
-                    //Login Button
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 56,
                       child: ElevatedButton(
                         onPressed: (){
                           if(_formKey.currentState!.validate()){
                             login();
-                            // if(_patientPress==true && _doctorPress == false){
-                            //   patientLogin();
-                            // }
-                            //
-                            // else if(_patientPress==false && _doctorPress == true){
-                            //   doctorLogin();
-                            // }
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -466,19 +298,14 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 60),
-
                     const Text(
                       'Other sign in options',
                       style: TextStyle(
                           color: Color(0xFF5E1A84)
                       ),
                     ),
-
                     const SizedBox(height: 15),
-
-                    //Icons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -493,9 +320,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           iconSize: 50,
                         ),
-
                         const SizedBox(width: 15),
-
                         IconButton(
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
@@ -507,9 +332,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           iconSize: 50,
                         ),
-
                         const SizedBox(width: 15),
-
                         IconButton(
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
@@ -526,8 +349,6 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-
-              //Register
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Row(
@@ -539,9 +360,7 @@ class _LoginPageState extends State<LoginPage> {
                         color: Color(0xFF5E1A84),
                       ),
                     ),
-
                     const SizedBox(width: 10),
-
                     InkWell(
                       onTap: (){
                         Navigator.push(

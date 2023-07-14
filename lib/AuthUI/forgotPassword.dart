@@ -1,20 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:umbrella_care/AuthUI/login_page.dart';
-import 'package:umbrella_care/AuthUI/sendCode.dart';
-
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
-
   @override
   State<ForgotPassword> createState() => _ForgotPasswordState();
 }
-
 class _ForgotPasswordState extends State<ForgotPassword> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _email = TextEditingController();
-
-
   Future resetPassword() async {
     try{
       await FirebaseAuth.instance.sendPasswordResetEmail(
@@ -28,7 +22,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 )
             )
         );
-
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -37,11 +30,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         );
       });
     }
-
     on FirebaseAuthException catch(e){
       if(e.code == 'user-not-found'){
-        print('User not found');
-
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 backgroundColor: Colors.red,
@@ -51,7 +41,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             )
         );
       }
-
       else{
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -64,14 +53,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       }
     }
   }
-
   @override
   void dispose() {
     // TODO: implement dispose
     _email.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,8 +74,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 50),
-
-                      //Back Button
                       Container(
                         width: 39,
                         height: 39,
@@ -106,9 +91,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 50),
-
                       const Text(
                         'Forgot password?',
                         style: TextStyle(
@@ -117,9 +100,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             fontWeight: FontWeight.bold
                         ),
                       ),
-
                       const SizedBox(height: 20),
-
                       const Text(
                         'Don\'t worry it happens. Please enter the',
                         style: TextStyle(
@@ -127,9 +108,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             fontSize: 16
                         ),
                       ),
-
                       const SizedBox(height: 5),
-
                       const Text(
                         'email associated with your account',
                         style: TextStyle(
@@ -137,9 +116,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             fontSize: 16
                         ),
                       ),
-
                       const SizedBox(height: 40),
-
                       const Text(
                         'Email address',
                         style: TextStyle(
@@ -147,10 +124,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             fontSize: 16
                         ),
                       ),
-
                       const SizedBox(height: 10),
-
-                      //Email Field
                       TextFormField(
                         validator: (value){
                           bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value!);
@@ -184,15 +158,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 40),
-
-                      //Send Code button
-                      Container(
+                      SizedBox(
                         width: MediaQuery.of(context).size.width,
                         height: 56,
                         child:  //Send Code button
-                        Container(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width,
                           height: 56,
                           child: ElevatedButton(
@@ -219,7 +190,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ],
                   ),
                 ),
-
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Row(
@@ -231,9 +201,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           color: Color(0xFF5E1A84),
                         ),
                       ),
-
                       const SizedBox(width: 10),
-
                       InkWell(
                         onTap: (){
                           Navigator.push(

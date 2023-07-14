@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:umbrella_care/AuthUI/login_page.dart';
 class PatientRegistration extends StatefulWidget {
   const PatientRegistration({Key? key}) : super(key: key);
-
   @override
   State<PatientRegistration> createState() => _PatientRegistrationState();
 }
