@@ -26,6 +26,7 @@ class _PatientInformationState extends State<PatientInformation> {
   PlatformFile? _pickedReport;
   File? _reportToDisplay;
   final doctorId = FirebaseAuth.instance.currentUser!.uid;
+  String _imgUrl = '';
 
   //get user details form firebase
   Future<DocumentSnapshot<Map<String, dynamic>>?> fetchPatientDetails() async {
@@ -39,6 +40,9 @@ class _PatientInformationState extends State<PatientInformation> {
       _name = data['name'];
       _contact = data['contact'];
 
+      if(data.containsKey('img url')){
+        _imgUrl = data['img url'];
+      }
       setState(() {
         _isLoading = false;
       });
@@ -178,7 +182,12 @@ class _PatientInformationState extends State<PatientInformation> {
                                       spreadRadius: 2.0)
                                 ]
                             ),
-                            child: Image.asset(
+                            child: _imgUrl!= ''? ClipRRect(
+                              borderRadius : BorderRadius.circular(30),
+                              child: Image.network(
+                                _imgUrl
+                              ),
+                            ) : Image.asset(
                               'assets/patientImages/patient.png',
                               fit: BoxFit.cover,
                             ),
