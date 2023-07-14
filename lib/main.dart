@@ -1,11 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
-import 'package:umbrella_care/Patient/patientHome.dart';
-import 'package:umbrella_care/AuthUI/login_page.dart';
-import 'package:umbrella_care/AuthUI/patientRegistration.dart';
-import 'package:umbrella_care/AuthUI/selectionScreen.dart';
 import 'package:umbrella_care/splashScreen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

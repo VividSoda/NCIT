@@ -2,14 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:umbrella_care/AuthUI/login_page.dart';
-
 class DoctorRegistration extends StatefulWidget {
   const DoctorRegistration({Key? key}) : super(key: key);
 
   @override
   State<DoctorRegistration> createState() => _DoctorRegistrationState();
 }
-
 class _DoctorRegistrationState extends State<DoctorRegistration> {
   final _formKey = GlobalKey<FormState>();
   bool _hidePass = true;
@@ -19,19 +17,14 @@ class _DoctorRegistrationState extends State<DoctorRegistration> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
   CollectionReference students = FirebaseFirestore.instance.collection('doctors');
-
   registration()async{
     try {
       final UserCredential userCredential;
       final db = FirebaseFirestore.instance;
-
       userCredential =
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _email.text, password: _password.text
       );
-
-      // print(userCredential);
-
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               backgroundColor: Colors.green,
@@ -40,7 +33,6 @@ class _DoctorRegistrationState extends State<DoctorRegistration> {
               )
           )
       );
-
       db.collection('doctors').doc(userCredential.user!.uid).set(
           {
             'name': _name.text,
@@ -77,10 +69,7 @@ class _DoctorRegistrationState extends State<DoctorRegistration> {
             )
         );
       }
-
       else if(e.code == 'email-already-in-use'){
-        // print('Account already exists');
-
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 backgroundColor: Colors.red,
@@ -92,19 +81,6 @@ class _DoctorRegistrationState extends State<DoctorRegistration> {
       }
     }
   }
-
-  // //Add doctor data
-  // Future<void> addDoctor() async{
-  //   // Call the user's CollectionReference to add a new user
-  //   return students
-  //       .add({
-  //     'Name': _name.text,
-  //     'email': _email.text,
-  //   })
-  //       .then((value) => print("User Added"))
-  //       .catchError((error) => print("Failed to add user: $error"));
-  // }
-
   @override
   void dispose() {
     // TODO: implement dispose
@@ -113,7 +89,6 @@ class _DoctorRegistrationState extends State<DoctorRegistration> {
     _confirmPassword.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,7 +101,6 @@ class _DoctorRegistrationState extends State<DoctorRegistration> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 150),
-
                 const Align(
                   alignment: Alignment.center,
                   child: Text(
@@ -138,16 +112,12 @@ class _DoctorRegistrationState extends State<DoctorRegistration> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
-                //Name
                 TextFormField(
                   validator: (value){
                     if(value!.isEmpty){
                       return "Name";
                     }
-
                     else{
                       return null;
                     }
@@ -169,10 +139,7 @@ class _DoctorRegistrationState extends State<DoctorRegistration> {
                       )
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
-                //Email
                 TextFormField(
                   validator: (value){
                     bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value!);
@@ -206,10 +173,7 @@ class _DoctorRegistrationState extends State<DoctorRegistration> {
                       )
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
-                //Pass
                 TextFormField(
                   validator: (value) {
                     if(value!.isEmpty){
@@ -253,10 +217,7 @@ class _DoctorRegistrationState extends State<DoctorRegistration> {
                       )
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
-                //Confirm Pass
                 TextFormField(
                   validator: (value) {
                     if(value!.isEmpty){
@@ -299,11 +260,8 @@ class _DoctorRegistrationState extends State<DoctorRegistration> {
                       )
                   ),
                 ),
-
                 const SizedBox(height: 30),
-
-                //Register Button
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 56,
                   child: ElevatedButton(
@@ -327,10 +285,7 @@ class _DoctorRegistrationState extends State<DoctorRegistration> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 40),
-
-                //Log in
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -340,9 +295,7 @@ class _DoctorRegistrationState extends State<DoctorRegistration> {
                         color: Color(0xFF5E1A84),
                       ),
                     ),
-
                     const SizedBox(width: 10),
-
                     InkWell(
                         onTap: (){
                           Navigator.push(

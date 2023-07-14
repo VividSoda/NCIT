@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:umbrella_care/AuthUI/doctorRegistration.dart';
 import 'package:umbrella_care/AuthUI/login_page.dart';
 import 'package:umbrella_care/AuthUI/patientRegistration.dart';
-
 class SelectionPage extends StatelessWidget {
   const SelectionPage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,17 +16,13 @@ class SelectionPage extends StatelessWidget {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          //Logo
                           Align(
                             alignment: Alignment.center,
                             child: Image.asset(
                               'assets/logos/UmbrellaCare.png',
                             ),
                           ),
-
                           const SizedBox(height: 40),
-
-                          //Text
                           const Text(
                             'Simple Healthcare',
                             style: TextStyle(
@@ -37,10 +31,7 @@ class SelectionPage extends StatelessWidget {
                                 color: Color(0xFF5E1A84)
                             ),
                           ),
-
                           const SizedBox(height: 5),
-
-                          //Text
                           const Text(
                             'Trust us with your precious health',
                             style: TextStyle(
@@ -48,10 +39,7 @@ class SelectionPage extends StatelessWidget {
                                 fontSize: 18
                             ),
                           ),
-
                           const SizedBox(height: 5),
-
-                          //Text
                           const Text(
                             'Lifestyle',
                             style: TextStyle(
@@ -59,11 +47,8 @@ class SelectionPage extends StatelessWidget {
                                 fontSize: 18
                             ),
                           ),
-
                           const SizedBox(height: 40),
-
-                          //Patient Button
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width,
                             height: 56,
                             child: ElevatedButton(
@@ -87,11 +72,8 @@ class SelectionPage extends StatelessWidget {
                               ),
                             ),
                           ),
-
                           const SizedBox(height: 15),
-
-                          //Docotor Button
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width,
                             height: 56,
                             child: OutlinedButton(
@@ -120,7 +102,6 @@ class SelectionPage extends StatelessWidget {
                           ),
                         ],
                       ),
-
                       Align(
                         alignment: Alignment.bottomCenter,
                         child:  //Log in
@@ -133,9 +114,7 @@ class SelectionPage extends StatelessWidget {
                                 color: Color(0xFF5E1A84),
                               ),
                             ),
-
                             const SizedBox(width: 10),
-
                             InkWell(
                               onTap: (){
                                 Navigator.push(

@@ -2,14 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:umbrella_care/AuthUI/login_page.dart';
-
 class PatientRegistration extends StatefulWidget {
   const PatientRegistration({Key? key}) : super(key: key);
 
   @override
   State<PatientRegistration> createState() => _PatientRegistrationState();
 }
-
 class _PatientRegistrationState extends State<PatientRegistration> {
   final _formKey = GlobalKey<FormState>();
   bool _hidePass = true;
@@ -19,8 +17,6 @@ class _PatientRegistrationState extends State<PatientRegistration> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
   CollectionReference students = FirebaseFirestore.instance.collection('patients');
-
-  //Patient registration
   registration()async{
     try {
       final UserCredential userCredential;
@@ -29,9 +25,6 @@ class _PatientRegistrationState extends State<PatientRegistration> {
       userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _email.text, password: _password.text
       );
-
-      print(userCredential);
-
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               backgroundColor: Colors.green,
@@ -40,7 +33,6 @@ class _PatientRegistrationState extends State<PatientRegistration> {
               )
           )
       );
-
       db.collection('patients').doc(userCredential.user!.uid).set(
         {
           'name' : _name.text,
@@ -62,11 +54,8 @@ class _PatientRegistrationState extends State<PatientRegistration> {
         );
       });
     }
-
     on FirebaseAuthException catch(e){
       if(e.code == 'weak-password'){
-        // print('Password too weak');
-
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 backgroundColor: Colors.red,
@@ -76,10 +65,7 @@ class _PatientRegistrationState extends State<PatientRegistration> {
             )
         );
       }
-
       else if(e.code == 'email-already-in-use'){
-        // print('Account already exists');
-
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 backgroundColor: Colors.red,
@@ -91,19 +77,6 @@ class _PatientRegistrationState extends State<PatientRegistration> {
       }
     }
   }
-
-  //Add patient data
-  // Future<void> addPatient() async{
-  //   // Call the user's CollectionReference to add a new user
-  //   return students.doc()
-  //       .set({
-  //     'Name': _name.text,
-  //     'email': _email.text,
-  //   })
-  //       .then((value) => print("User Added"))
-  //       .catchError((error) => print("Failed to add user: $error"));
-  // }
-
   @override
   void dispose() {
     // TODO: implement dispose
@@ -113,8 +86,6 @@ class _PatientRegistrationState extends State<PatientRegistration> {
     _confirmPassword.dispose();
     super.dispose();
   }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,7 +98,6 @@ class _PatientRegistrationState extends State<PatientRegistration> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 150),
-
                 const Align(
                   alignment: Alignment.center,
                   child: Text(
@@ -139,10 +109,7 @@ class _PatientRegistrationState extends State<PatientRegistration> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
-                //Name
                 TextFormField(
                   validator: (value){
                     if(value!.isEmpty){
@@ -170,10 +137,7 @@ class _PatientRegistrationState extends State<PatientRegistration> {
                       )
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
-                //Email
                 TextFormField(
                   validator: (value){
                     bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value!);
@@ -207,10 +171,7 @@ class _PatientRegistrationState extends State<PatientRegistration> {
                       )
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
-                //Pass
                 TextFormField(
                   validator: (value) {
                     if(value!.isEmpty){
@@ -254,10 +215,7 @@ class _PatientRegistrationState extends State<PatientRegistration> {
                     )
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
-                //Confirm Pass
                 TextFormField(
                   validator: (value) {
                     if(value!.isEmpty){
@@ -301,11 +259,8 @@ class _PatientRegistrationState extends State<PatientRegistration> {
                       )
                   ),
                 ),
-
                 const SizedBox(height: 30),
-
-                //Register Button
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 56,
                   child: ElevatedButton(
@@ -328,10 +283,7 @@ class _PatientRegistrationState extends State<PatientRegistration> {
                       ),
                   ),
                 ),
-
                 const SizedBox(height: 40),
-
-                //Log in
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -341,9 +293,7 @@ class _PatientRegistrationState extends State<PatientRegistration> {
                         color: Color(0xFF5E1A84),
                       ),
                     ),
-
                     const SizedBox(width: 10),
-
                     InkWell(
                       onTap: (){
                         Navigator.push(
