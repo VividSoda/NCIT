@@ -10,28 +10,44 @@ import 'package:umbrella_care/Models/Patient/patientUploadedReport.dart';
 import 'package:umbrella_care/Patient/pdfPatientReportView.dart';
 import 'package:umbrella_care/Patient/uploadRecord.dart';
 import 'package:umbrella_care/navBar.dart';
+
 class PatientReport extends StatefulWidget {
   const PatientReport({Key? key}) : super(key: key);
+
   @override
   State<PatientReport> createState() => _PatientReportState();
 }
+
 class _PatientReportState extends State<PatientReport> {
   final currentUser = FirebaseAuth.instance.currentUser;
   List<DoctorUploadedReport> doctorUploadedReports = [];
   bool _isLoading = true;
   PatientUploadedReport? patientUploadedReport;
+
+  //fetch reports from firebase
   Future<List<DoctorUploadedReport>> getReportInfo() async {
+    print('get reports+++++++++++-----****');
     List<DoctorUploadedReport> doctorUploadedReports = [];
+
     final documents = FirebaseFirestore.instance.collection('patients').doc(currentUser!.uid).collection('records');
+
     QuerySnapshot snapshot = await documents.get();
+
+    print('%%%%%%%');
+    print(snapshot.docs);
+
     for (var doc in snapshot.docs) {
       Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+
       String dateString = data!['date created'];
       List<dynamic> list = data['record ids'];
+
       DateTime dateCreated = DateTime.parse(dateString);
       String doctorId = data['doctor id'];
       List<String> recordIds = list.cast<String>();
+
       Map<String, String>? doctorDetails = await fetchDoctorDetails(doctorId);
+
       DoctorUploadedReport doctorUploadedReport = DoctorUploadedReport(
           docId: doctorId,
           patientId: currentUser!.uid,
@@ -42,48 +58,75 @@ class _PatientReportState extends State<PatientReport> {
         affiliation: doctorDetails['affiliations']!,
         imgUrl: doctorDetails['img url']
       );
+      print('########');
+      print(doctorUploadedReport);
       doctorUploadedReports.add(doctorUploadedReport);
     }
+    print('*********');
+    print(doctorUploadedReports);
     doctorUploadedReports.sort((a,b) => a.dateCreated.compareTo(b.dateCreated));
     return doctorUploadedReports;
   }
+
+  //assign reports list
   Future<void> fetchReports() async {
+    print('reports fetched++++++++');
     List<DoctorUploadedReport> fetchedReports = await getReportInfo();
     PatientUploadedReport? patientReport = await getSelfReportInfo();
+    // doctorUploadedReports = fetchedReports;
+
     setState(() {
       doctorUploadedReports = fetchedReports;
       patientUploadedReport = patientReport;
       _isLoading = false;
     });
   }
+
+  //Fetch doctor details
   Future<Map<String, String>> fetchDoctorDetails(String docId) async {
     final doctorDoc = FirebaseFirestore.instance.collection('doctors').doc(docId);
+
     DocumentSnapshot<Map<String, dynamic>> snapshot = await doctorDoc.get();
+
     Map<String, dynamic> data = snapshot.data()!;
+
     String name = data['name'];
     String specialization = data['specialization'];
     String affiliation = data['affiliations'];
+
     String imgUrl = '';
     if(data.containsKey('img url')){
       imgUrl = data['img url']!;
+      print('$imgUrl[][][][]');
     }
+
     return {'name' : name, 'specialization' : specialization, 'affiliations' : affiliation, 'img url' : imgUrl};
   }
+
+  // Compare only the date fields of two DateTime variables
   bool isSameDate(DateTime date1, DateTime date2) {
     return date1.year == date2.year &&
         date1.month == date2.month &&
         date1.day == date2.day;
   }
+
+  //Fetch self uploaded report
   Future<PatientUploadedReport?> getSelfReportInfo() async {
     final document = FirebaseFirestore.instance.collection('patients').doc(currentUser!.uid).collection('self uploaded records').doc(currentUser!.uid);
+
     DocumentSnapshot<Map<String, dynamic>> snapshot = await document.get();
+
     if(snapshot.exists){
       Map<String, dynamic> data = snapshot.data()!;
+
       String dateString = data['date created']!;
       List<dynamic> list = data['record ids'];
+
       DateTime dateCreated = DateTime.parse(dateString);
       List<String> recordIds = list.cast<String>();
+
       Map<String, String>? patientDetails = await fetchPatientDetails(currentUser!.uid);
+
       PatientUploadedReport patientUploadedReport = PatientUploadedReport(
         patientId: currentUser!.uid,
         reportIds: recordIds,
@@ -94,31 +137,46 @@ class _PatientReportState extends State<PatientReport> {
       );
       return patientUploadedReport;
     }
+
     return null;
   }
+
+  //Fetch patient details
   Future<Map<String, String>> fetchPatientDetails(String patientId) async {
     final doctorDoc = FirebaseFirestore.instance.collection('patients').doc(patientId);
+
     DocumentSnapshot<Map<String, dynamic>> snapshot = await doctorDoc.get();
+
     Map<String, dynamic> data = snapshot.data()!;
+
     String name = data['name'];
     String contact = data['contact'];
+
     String imgUrl = '';
     if (data.containsKey('img url')){
       imgUrl = data['img url'];
     }
+
     return {'name' : name, 'contact' : contact, 'img url' : imgUrl};
   }
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fetchReports();
+    print(doctorUploadedReports);
   }
+
   @override
   Widget build(BuildContext context) {
     bool doctorRecordsExist = doctorUploadedReports.isNotEmpty;
     bool patientRecordExist = patientUploadedReport!=null;
     bool recordExist = doctorRecordsExist || patientRecordExist;
+    // return FutureBuilder(
+    //   future: fetchReports(),
+    //   builder: (context, snapshot){
         return Scaffold(
           appBar: AppBar(
             elevation: 0,
@@ -143,6 +201,7 @@ class _PatientReportState extends State<PatientReport> {
                   color: primary
               ),
             ),
+
             actions: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -154,7 +213,9 @@ class _PatientReportState extends State<PatientReport> {
                         color: primary
                       ),
                     ),
+
                     const SizedBox(width: 5),
+
                     IconButton(
                       padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -174,6 +235,7 @@ class _PatientReportState extends State<PatientReport> {
               )
             ],
           ),
+
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -184,6 +246,7 @@ class _PatientReportState extends State<PatientReport> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 20),
+
                     if(patientRecordExist)
                     const Text(
                       'Reports Uploaded by Patient',
@@ -193,8 +256,10 @@ class _PatientReportState extends State<PatientReport> {
                           color: primary
                       ),
                     ),
+
                     if(patientRecordExist)
                     const SizedBox(height: 20),
+
                     if(patientRecordExist)
                     GestureDetector(
                       onTap: (){
@@ -208,8 +273,10 @@ class _PatientReportState extends State<PatientReport> {
                           sameDate: false
                         )
                     ),
+
                     if(patientRecordExist)
                     const SizedBox(height: 10),
+
                     if(doctorRecordsExist)
                     const Text(
                         'Reports Uploaded by Doctor',
@@ -219,8 +286,10 @@ class _PatientReportState extends State<PatientReport> {
                         color: primary
                       ),
                     ),
+
                     const SizedBox(height: 20),
-                    ListView.builder(
+
+                   ListView.builder(
                      physics: const NeverScrollableScrollPhysics(),
                      shrinkWrap: true,
                      itemCount: doctorUploadedReports.length,
@@ -229,6 +298,7 @@ class _PatientReportState extends State<PatientReport> {
                          DateTime date1 = doctorUploadedReports[index-1].dateCreated;
                          DateTime date2 = doctorUploadedReports[index].dateCreated;
                          bool sameDate = isSameDate(date1,date2);
+
                          return GestureDetector(
                            onTap: (){
                               Navigator.push(
@@ -242,6 +312,8 @@ class _PatientReportState extends State<PatientReport> {
                              )
                          );
                        }
+                       print('%%%%%%%%%%%%%%%%%%%%%');
+                       print(doctorUploadedReports.length);
                       return GestureDetector(
                           onTap: (){
                             Navigator.push(
@@ -269,7 +341,9 @@ class _PatientReportState extends State<PatientReport> {
                       color: primary
                     ),
                   ),
+
                   const SizedBox(height: 10),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -281,7 +355,9 @@ class _PatientReportState extends State<PatientReport> {
                             color: primary
                         ),
                       ),
+
                       const SizedBox(width: 5),
+
                       InkWell(
                         onTap: (){
                           Navigator.push(
