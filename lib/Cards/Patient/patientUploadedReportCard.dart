@@ -3,18 +3,24 @@ import 'package:intl/intl.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Models/Patient/patientUploadedReport.dart';
 import 'package:flutter/material.dart';
+
 class PatientUploadedReportCard extends StatelessWidget {
   final PatientUploadedReport patientUploadedReport;
   final bool sameDate;
-  const PatientUploadedReportCard({Key? key, required this.patientUploadedReport, required this.sameDate}) : super(key: key);
+
+  const PatientUploadedReportCard(
+      {Key? key, required this.patientUploadedReport, required this.sameDate})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    String formattedDate = DateFormat("d MMMM yyyy").format(patientUploadedReport.dateCreated);
+    String formattedDate =
+        DateFormat("d MMMM yyyy").format(patientUploadedReport.dateCreated);
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          if(!sameDate)
+          if (!sameDate)
             Row(
               children: [
                 Text(
@@ -22,8 +28,7 @@ class PatientUploadedReportCard extends StatelessWidget {
                   style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
-                      color: primary
-                  ),
+                      color: primary),
                 ),
                 const Expanded(
                   child: DottedLine(
@@ -33,8 +38,7 @@ class PatientUploadedReportCard extends StatelessWidget {
                 )
               ],
             ),
-          if(!sameDate)
-          const SizedBox(height: 20),
+          if (!sameDate) const SizedBox(height: 20),
           Stack(
             children: [
               Container(
@@ -42,28 +46,27 @@ class PatientUploadedReportCard extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 height: 112,
                 decoration: BoxDecoration(
-                    color: primary,
-                    borderRadius: BorderRadius.circular(30)),
+                    color: primary, borderRadius: BorderRadius.circular(30)),
                 child: Row(
                   children: [
                     //Image
                     SizedBox(
                       height: 57,
                       width: 60,
-                      child: patientUploadedReport.imgUrl!=''? ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(
-                          '${patientUploadedReport.imgUrl}'
-                        ),
-                      ) : Image.asset(
-                        'assets/patientImages/patient.png',
-                        fit: BoxFit.cover,
-                      ),
+                      child: patientUploadedReport.imgUrl != ''
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.network(
+                                  '${patientUploadedReport.imgUrl}'),
+                            )
+                          : Image.asset(
+                              'assets/patientImages/patient.png',
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     const SizedBox(width: 20),
                     Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
@@ -71,8 +74,7 @@ class PatientUploadedReportCard extends StatelessWidget {
                           style: const TextStyle(
                               fontSize: 19,
                               fontWeight: FontWeight.w700,
-                              color: Colors.white
-                          ),
+                              color: Colors.white),
                         ),
                         const SizedBox(height: 5),
                         Text(
@@ -80,8 +82,7 @@ class PatientUploadedReportCard extends StatelessWidget {
                           style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w400,
-                              color: Colors.white
-                          ),
+                              color: Colors.white),
                         ),
                       ],
                     )

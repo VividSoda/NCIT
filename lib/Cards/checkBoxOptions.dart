@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:umbrella_care/Constants/colors.dart';
+
 class CheckboxOption extends StatelessWidget {
   final String optionText;
   final String optionImage;
   final String selectedOption;
   final Function(String) onOptionSelected;
-  const CheckboxOption({super.key,
+
+  const CheckboxOption({
+    super.key,
     required this.optionText,
     required this.optionImage,
     required this.selectedOption,
     required this.onOptionSelected,
   });
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -32,17 +36,15 @@ class CheckboxOption extends StatelessWidget {
               child: Center(
                 child: selectedOption == optionText
                     ? const Icon(
-                    Icons.check,
-                    size: 20,
-                  color: primary,
-                )
+                        Icons.check,
+                        size: 20,
+                        color: primary,
+                      )
                     : null,
               ),
             ),
             const SizedBox(width: 10),
-            Image.asset(
-              optionImage
-            ),
+            Image.asset(optionImage),
           ],
         ),
       ),

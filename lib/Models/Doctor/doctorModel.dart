@@ -2,6 +2,8 @@ class DoctorInfo {
   final String uid, name, nmcNo, contact, qualifications, affiliations, experience, specialization;
   final bool validity;
   String? imgUrl = '';
+  double? avgRating = 0.0;
+  int? noOfReviews = 0;
 
   DoctorInfo(
       {
@@ -14,7 +16,9 @@ class DoctorInfo {
         required this.experience,
         required this.specialization,
         required this.validity,
-        this.imgUrl
+        this.imgUrl,
+        this.avgRating,
+        this.noOfReviews
       }
       );
 }

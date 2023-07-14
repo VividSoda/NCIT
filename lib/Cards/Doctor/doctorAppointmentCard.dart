@@ -2,12 +2,17 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Models/Patient/doctorAppointmentInfo.dart';
+
 class DoctorAppointmentCard extends StatelessWidget {
   final DoctorAppointmentInfo appointment;
-  const DoctorAppointmentCard({Key? key, required this.appointment}) : super(key: key);
+
+  const DoctorAppointmentCard({Key? key, required this.appointment})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    final String formattedTime = '${appointment.bookedTime} : 00 ${appointment.bookedTime > 11 ? "PM" : "AM"}';
+    final String formattedTime =
+        '${appointment.bookedTime} : 00 ${appointment.bookedTime > 11 ? "PM" : "AM"}';
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
@@ -17,9 +22,7 @@ class DoctorAppointmentCard extends StatelessWidget {
               Text(
                 formattedTime,
                 style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: primary),
+                    fontSize: 14, fontWeight: FontWeight.w700, color: primary),
               ),
               const Expanded(
                 child: DottedLine(
@@ -37,8 +40,7 @@ class DoctorAppointmentCard extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 height: 112,
                 decoration: BoxDecoration(
-                    color: primary,
-                    borderRadius: BorderRadius.circular(30)),
+                    color: primary, borderRadius: BorderRadius.circular(30)),
                 child: Row(
                   children: [
                     //Image
@@ -47,18 +49,17 @@ class DoctorAppointmentCard extends StatelessWidget {
                       width: 60,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: appointment.imgUrl!=''? Image.network(
-                          '${appointment.imgUrl}'
-                        ) : Image.asset(
-                          'assets/doctorImages/doctorPic.png',
-                          fit: BoxFit.cover,
-                        ),
+                        child: appointment.imgUrl != ''
+                            ? Image.network('${appointment.imgUrl}')
+                            : Image.asset(
+                                'assets/doctorImages/doctorPic.png',
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                     const SizedBox(width: 20),
                     Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(

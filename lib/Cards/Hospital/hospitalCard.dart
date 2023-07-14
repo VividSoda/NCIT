@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Models/Hospital/hospitalModel.dart';
+
 class HospitalCard extends StatelessWidget {
   final HospitalModel hospital;
+
   const HospitalCard({Key? key, required this.hospital}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,8 +21,7 @@ class HospitalCard extends StatelessWidget {
               color: Colors.black.withOpacity(0.2),
               offset: const Offset(0, 3),
               blurRadius: 6.0,
-              spreadRadius: 2.0
-          )
+              spreadRadius: 2.0)
         ],
       ),
       child: Row(
@@ -70,8 +72,7 @@ class HospitalCard extends StatelessWidget {
                   style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 13,
-                      color: primary
-                  ),
+                      color: primary),
                 ),
               ],
             ),

@@ -6,12 +6,14 @@ import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Patient/patientChatBot.dart';
 import 'package:http/http.dart' as http;
 import 'package:umbrella_care/navBar.dart';
+
 class DoctorChatBot extends StatefulWidget {
   const DoctorChatBot({Key? key}) : super(key: key);
 
   @override
   State<DoctorChatBot> createState() => _DoctorChatBotState();
 }
+
 class _DoctorChatBotState extends State<DoctorChatBot> {
   final TextEditingController _textEditingController = TextEditingController();
   List<ChatMessage> chatMessages = [];
@@ -23,6 +25,7 @@ class _DoctorChatBotState extends State<DoctorChatBot> {
   List<String> notAnswered = [];
   List<String> pastQuestion = [];
   List<String> suggestedQuestion = [];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -30,44 +33,50 @@ class _DoctorChatBotState extends State<DoctorChatBot> {
     initializeChatBot();
     assignSuggestedQuestions();
   }
+
   void initializeChatBot() async {
     bool exists = await checkChatBot();
     if (exists) {
       await fetchUserDetails();
       fetchChatBotDetails();
-    }
-    else{
+    } else {
       await fetchUserDetails();
       createChatBotData();
     }
   }
-  Future<bool> checkChatBot() async{
-    final userDoc = FirebaseFirestore.instance.collection('chat bot').doc(currentUser!.uid);
+
+  Future<bool> checkChatBot() async {
+    final userDoc =
+        FirebaseFirestore.instance.collection('chat bot').doc(currentUser!.uid);
 
     DocumentSnapshot<Map<String, dynamic>> snapshot = await userDoc.get();
 
-    if(snapshot.exists){
+    if (snapshot.exists) {
       return true;
     }
 
     return false;
   }
+
   Future<void> fetchUserDetails() async {
-    if(currentUser!=null){
-      final userDoc =
-      FirebaseFirestore.instance.collection('doctors').doc(currentUser!.uid);
+    if (currentUser != null) {
+      final userDoc = FirebaseFirestore.instance
+          .collection('doctors')
+          .doc(currentUser!.uid);
       DocumentSnapshot<Map<String, dynamic>> snapshot = await userDoc.get();
-      if(snapshot.exists){
+      if (snapshot.exists) {
         Map<String, dynamic> data = snapshot.data()!;
         email = data['email'];
         name = data['name'];
       }
     }
   }
-  Future<void> fetchChatBotDetails() async{
-    final userDoc = FirebaseFirestore.instance.collection('chat bot').doc(currentUser!.uid);
+
+  Future<void> fetchChatBotDetails() async {
+    final userDoc =
+        FirebaseFirestore.instance.collection('chat bot').doc(currentUser!.uid);
     DocumentSnapshot<Map<String, dynamic>> snapshot = await userDoc.get();
-    if(snapshot.exists){
+    if (snapshot.exists) {
       Map<String, dynamic> data = snapshot.data()!;
       email = data['email'];
       name = data['name'];
@@ -80,43 +89,47 @@ class _DoctorChatBotState extends State<DoctorChatBot> {
     }
   }
 
-  Future<void> createChatBotData() async{
+  Future<void> createChatBotData() async {
     final userDoc = FirebaseFirestore.instance.collection('chat bot');
     userDoc.doc(currentUser!.uid).set({
-      'email' : email,
-      'name' : name,
-      'suggested_questions' : suggested,
-      'not_answered' : notAnswered,
-      'past_questions' : pastQuestion
+      'email': email,
+      'name': name,
+      'suggested_questions': suggested,
+      'not_answered': notAnswered,
+      'past_questions': pastQuestion
     });
   }
-  Future<void> assignSuggestedQuestions() async{
+
+  Future<void> assignSuggestedQuestions() async {
     List<String> fetchedQuestions = await fetchSuggestedQuestions();
     setState(() {
       suggestedQuestion = fetchedQuestions;
       suggestedQuestion.shuffle();
     });
   }
-  Future<List<String>> fetchSuggestedQuestions() async{
+
+  Future<List<String>> fetchSuggestedQuestions() async {
     List<String> suggestions = [];
-    final document = FirebaseFirestore.instance.collection('chat bot').doc(currentUser!.uid);
+    final document =
+        FirebaseFirestore.instance.collection('chat bot').doc(currentUser!.uid);
     DocumentSnapshot<Map<String, dynamic>> snapshot = await document.get();
-    if(snapshot.exists){
+    if (snapshot.exists) {
       Map<String, dynamic> data = snapshot.data()!;
-      if(data.containsKey('suggested_questions')){
-        List<dynamic> list = data['suggested_questions'] ;
+      if (data.containsKey('suggested_questions')) {
+        List<dynamic> list = data['suggested_questions'];
         suggestions = list.cast<String>();
       }
     }
     return suggestions;
   }
+
   void _sendMessage(String message) async {
     setState(() {
       chatMessages.add(ChatMessage(text: message));
     });
     _textEditingController.clear();
     String apiUrl = 'http://172.16.3.124:8000/umbrellacare/chatbot/';
-    Map<String, dynamic> requestBody = {'message': message,'email':email};
+    Map<String, dynamic> requestBody = {'message': message, 'email': email};
     try {
       http.Response response = await http.post(
         Uri.parse(apiUrl),
@@ -128,12 +141,16 @@ class _DoctorChatBotState extends State<DoctorChatBot> {
         dynamic botReply = responseData['success'];
         if (botReply.containsKey('suggested')) {
           String suggested = botReply['suggested'];
-          latestResponse=suggested;
+          latestResponse = suggested;
         }
-        if (botReply is Map<String, dynamic> && botReply.containsKey('message')) {
+        if (botReply is Map<String, dynamic> &&
+            botReply.containsKey('message')) {
           String message = botReply['message'];
           setState(() {
-            chatMessages.add(ChatMessage(text: message, isBotReply: true,));
+            chatMessages.add(ChatMessage(
+              text: message,
+              isBotReply: true,
+            ));
             if (botReply.containsKey('data')) {
               List<dynamic> doctors = botReply['data'];
               for (var doctor in doctors) {
@@ -142,26 +159,24 @@ class _DoctorChatBotState extends State<DoctorChatBot> {
                       'qualifications: ${doctor['qualifications']}\n'
                       'specialization: ${doctor['specialization']}',
                   isBotReply: true,
-                  onTap: () {
-
-                  },
+                  onTap: () {},
                 ));
               }
             }
           });
         }
-      } else {
-
-      }
+      } else {}
     } catch (e) {
       print('API call failed: $e');
     }
   }
+
   @override
   void dispose() {
     _textEditingController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     bool suggestedQuestionsExist = suggestedQuestion.isNotEmpty;
@@ -172,17 +187,12 @@ class _DoctorChatBotState extends State<DoctorChatBot> {
         title: const Text(
           "Chat Bot",
           style: TextStyle(
-              fontSize: 27,
-              fontWeight: FontWeight.w700,
-              color: primary
-          ),
+              fontSize: 27, fontWeight: FontWeight.w700, color: primary),
         ),
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const NavBar())
-            );
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const NavBar()));
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -198,15 +208,16 @@ class _DoctorChatBotState extends State<DoctorChatBot> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    if(suggestedQuestionsExist)
+                    if (suggestedQuestionsExist)
                       ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: 3,
-                          itemBuilder: (context, index){
-                            return ChatMessage(text: suggestedQuestion[index], isBotReply: true);
-                          }
-                      ),
+                          itemBuilder: (context, index) {
+                            return ChatMessage(
+                                text: suggestedQuestion[index],
+                                isBotReply: true);
+                          }),
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -242,16 +253,22 @@ class _DoctorChatBotState extends State<DoctorChatBot> {
                     FloatingActionButton(
                       onPressed: () {
                         String message = _textEditingController.text;
-                        if(message=="no"){
+                        if (message == "no") {
                           setState(() {
                             chatMessages.add(const ChatMessage(text: "no"));
                           });
                           _textEditingController.clear();
                           return setState(() {
-                            chatMessages.add(const ChatMessage(text: "Im sorry.", isBotReply: true,));
+                            chatMessages.add(const ChatMessage(
+                              text: "Im sorry.",
+                              isBotReply: true,
+                            ));
                           });
                         }
-                        if (latestResponse != "no" && (message == "yes" || message == "yup" || message == "yeah")) {
+                        if (latestResponse != "no" &&
+                            (message == "yes" ||
+                                message == "yup" ||
+                                message == "yeah")) {
                           final tempMessage = latestResponse;
                           _sendMessage(tempMessage);
                           latestResponse = "no";

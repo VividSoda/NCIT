@@ -3,19 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Models/Doctor/doctorUploadedReport.dart';
+
 String latestResponse = "no";
+
 class DoctorUploadedReportCard extends StatelessWidget {
   final DoctorUploadedReport doctorUploadedReport;
   final bool sameDate;
-  const DoctorUploadedReportCard({Key? key, required this.doctorUploadedReport, required this.sameDate}) : super(key: key);
+
+  const DoctorUploadedReportCard(
+      {Key? key, required this.doctorUploadedReport, required this.sameDate})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    String formattedDate = DateFormat("d MMMM yyyy").format(doctorUploadedReport.dateCreated);
+    String formattedDate =
+        DateFormat("d MMMM yyyy").format(doctorUploadedReport.dateCreated);
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          if(!sameDate)
+          if (!sameDate)
             Row(
               children: [
                 Text(
@@ -33,8 +40,7 @@ class DoctorUploadedReportCard extends StatelessWidget {
                 )
               ],
             ),
-          if(!sameDate)
-          const SizedBox(height: 20),
+          if (!sameDate) const SizedBox(height: 20),
           Stack(
             children: [
               Container(
@@ -42,8 +48,7 @@ class DoctorUploadedReportCard extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 height: 112,
                 decoration: BoxDecoration(
-                    color: primary,
-                    borderRadius: BorderRadius.circular(30)),
+                    color: primary, borderRadius: BorderRadius.circular(30)),
                 child: Row(
                   children: [
                     //Image
@@ -52,19 +57,18 @@ class DoctorUploadedReportCard extends StatelessWidget {
                       width: 60,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: doctorUploadedReport.imgUrl!=''? Image.network(
-                          '${doctorUploadedReport.imgUrl}'
-                        ) : Image.asset(
-                          'assets/doctorImages/doctorPic.png',
-                          fit: BoxFit.cover,
-                        ),
+                        child: doctorUploadedReport.imgUrl != ''
+                            ? Image.network('${doctorUploadedReport.imgUrl}')
+                            : Image.asset(
+                                'assets/doctorImages/doctorPic.png',
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                     const SizedBox(width: 20),
                     Flexible(
                       child: Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
