@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:umbrella_care/Constants/colors.dart';
-
 class CheckboxOption extends StatelessWidget {
   final String optionText;
   final String optionImage;
   final String selectedOption;
   final Function(String) onOptionSelected;
-
   const CheckboxOption({super.key,
     required this.optionText,
     required this.optionImage,
     required this.selectedOption,
     required this.onOptionSelected,
   });
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -42,9 +39,7 @@ class CheckboxOption extends StatelessWidget {
                     : null,
               ),
             ),
-
             const SizedBox(width: 10),
-
             Image.asset(
               optionImage
             ),
