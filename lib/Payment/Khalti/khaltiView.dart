@@ -3,56 +3,64 @@ import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Payment/paymentOptions.dart';
 import 'package:umbrella_care/navBar.dart';
+
 class KhaltiView extends StatefulWidget {
   final String uid;
+
   const KhaltiView({Key? key, required this.uid}) : super(key: key);
+
   @override
   State<KhaltiView> createState() => _KhaltiViewState();
 }
+
 class _KhaltiViewState extends State<KhaltiView> {
   String referenceId = "";
-  payWithKhalti(){
+
+  //Khalti Pay
+  payWithKhalti() {
     KhaltiScope.of(context).pay(
         config: PaymentConfig(
           amount: 15000,
           productIdentity: 'VividSoda',
           productName: 'Umbrella Care',
         ),
-        preferences: [
-          PaymentPreference.khalti
-        ],
+        preferences: [PaymentPreference.khalti],
         onSuccess: onSuccess,
         onFailure: onFailure,
-        onCancel: onCancel
-    );
+        onCancel: onCancel);
   }
-  void onSuccess(PaymentSuccessModel success){
+
+  //On Success method of Khalti
+  void onSuccess(PaymentSuccessModel success) {
     showDialog(
         context: context,
-        builder: (context){
+        builder: (context) {
           return AlertDialog(
             title: const Text('Payment Successful'),
             actions: [
               SimpleDialogOption(
                 child: const Text('OK'),
-                onPressed: (){
-                  Navigator.push(
-                      context,
-                    MaterialPageRoute(builder: (context) => const NavBar())
-                  );
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const NavBar()));
+                  print('success+++++pay');
                 },
               )
             ],
           );
-        }
-    );
+        });
   }
-  void onFailure(PaymentFailureModel failure){
+
+  //On Failure method of Khalti
+  void onFailure(PaymentFailureModel failure) {
     debugPrint(failure.toString());
   }
-  void onCancel(){
+
+  //On Cancel method of Khalti
+  void onCancel() {
     debugPrint('Cancelled');
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,19 +79,17 @@ class _KhaltiViewState extends State<KhaltiView> {
                         height: 44,
                         decoration: BoxDecoration(
                             border: Border.all(color: greyBorders),
-                            borderRadius: BorderRadius.circular(15)
-                        ),
+                            borderRadius: BorderRadius.circular(15)),
                         child: IconButton(
                           onPressed: () {
                             Navigator.push(
                                 context,
-                              MaterialPageRoute(builder: (context) => PaymentOptions(uid: widget.uid))
-                            );
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        PaymentOptions(uid: widget.uid)));
                           },
-                          icon: const Icon(
-                              Icons.arrow_back_sharp,
-                              color: primary
-                          ),
+                          icon: const Icon(Icons.arrow_back_sharp,
+                              color: primary),
                         ),
                       ),
                       const SizedBox(width: 60),
@@ -92,23 +98,19 @@ class _KhaltiViewState extends State<KhaltiView> {
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
-                            color: primary
-                        ),
+                            color: primary),
                       )
                     ],
                   ),
                 ],
               ),
               Positioned(
-                top: MediaQuery.of(context).size.height*0.4,
-                // left: MediaQuery.of(context).size.width*0.25,
+                top: MediaQuery.of(context).size.height * 0.4,
                 child: Column(
                   children: [
-                    Image.asset(
-                        'assets/payment/Khalti.png'
-                    ),
+                    Image.asset('assets/payment/Khalti.png'),
                     const SizedBox(height: 20),
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 56,
                       child: ElevatedButton(
@@ -118,14 +120,11 @@ class _KhaltiViewState extends State<KhaltiView> {
                           style: ElevatedButton.styleFrom(
                               backgroundColor: primary,
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)
-                              )
-                          ),
+                                  borderRadius: BorderRadius.circular(10))),
                           child: const Text(
-                              "Pay with Khalti",
+                            "Pay with Khalti",
                             style: TextStyle(fontSize: 18),
-                          )
-                      ),
+                          )),
                     ),
                     Text(referenceId)
                   ],
