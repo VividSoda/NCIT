@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/bookingSuccessPage.dart';
+
 class EsewaTest extends StatelessWidget {
   const EsewaTest({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,16 +21,12 @@ class EsewaTest extends StatelessWidget {
                     height: 44,
                     decoration: BoxDecoration(
                         border: Border.all(color: greyBorders),
-                        borderRadius: BorderRadius.circular(15)
-                    ),
+                        borderRadius: BorderRadius.circular(15)),
                     child: IconButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      icon: const Icon(
-                          Icons.arrow_back_sharp,
-                          color: primary
-                      ),
+                      icon: const Icon(Icons.arrow_back_sharp, color: primary),
                     ),
                   ),
                   const SizedBox(width: 60),
@@ -37,15 +35,12 @@ class EsewaTest extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
-                        color: primary
-                    ),
+                        color: primary),
                   )
                 ],
               ),
               const SizedBox(height: 200),
-              Image.asset(
-                  'assets/payment/esewa.png'
-              ),
+              Image.asset('assets/payment/esewa.png'),
               const SizedBox(height: 20),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -54,20 +49,18 @@ class EsewaTest extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const BookingSuccesPage())
-                      );
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const BookingSuccessPage()));
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: primary,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)
-                        )
-                    ),
+                            borderRadius: BorderRadius.circular(10))),
                     child: const Text(
                       "Pay with esewa",
                       style: TextStyle(fontSize: 18),
-                    )
-                ),
+                    )),
               ),
             ],
           ),

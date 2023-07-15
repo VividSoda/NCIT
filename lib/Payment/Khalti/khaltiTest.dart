@@ -50,7 +50,7 @@ class KhaltiTest extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const BookingSuccesPage()));
+                              builder: (context) => const BookingSuccessPage()));
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: primary,

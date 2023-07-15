@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/navBar.dart';
-class BookingSuccesPage extends StatelessWidget {
-  const BookingSuccesPage({Key? key}) : super(key: key);
+
+class BookingSuccessPage extends StatelessWidget {
+  const BookingSuccessPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,31 +27,28 @@ class BookingSuccesPage extends StatelessWidget {
                 child: const Text(
                   'Successfully Booked',
                   style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: primary
-                  ),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: primary),
                 ),
               ),
               const SizedBox(height: 40),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.push(
-                        context, 
-                        MaterialPageRoute(builder: (context) => const NavBar())
-                    );
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const NavBar()));
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primary,
+                      backgroundColor: primary,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)
-                      )
-                  ),
+                          borderRadius: BorderRadius.circular(10))),
                   child: const Text(
-                      'Back to Home Page',
+                    'Back to Home Page',
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
