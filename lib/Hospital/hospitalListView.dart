@@ -4,29 +4,23 @@ import 'package:umbrella_care/Cards/Hospital/hospitalCard.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Hospital/hospitalDoctors.dart';
 import 'package:umbrella_care/Models/Hospital/hospitalModel.dart';
-
 class HospitalListView extends StatefulWidget {
   const HospitalListView({Key? key}) : super(key: key);
-
   @override
   State<HospitalListView> createState() => _HospitalListViewState();
 }
-
 class _HospitalListViewState extends State<HospitalListView> {
   List<HospitalModel> hospitals = [];
   List<HospitalModel> filteredHospitals = [];
   List<HospitalModel> generalHospitals = [];
   bool _isLoading  = true;
   final TextEditingController _searchController = TextEditingController();
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fetchHospitals();
   }
-
-  //assign hospital list
   Future<void> fetchHospitals() async {
     List<HospitalModel> fetchedHospitals = await getHospitalsFromFirebase();
     List<HospitalModel> fetchedGeneralHospitals = [];
@@ -38,16 +32,11 @@ class _HospitalListViewState extends State<HospitalListView> {
       _isLoading = false;
     });
   }
-
-  //get all hospital list from firebase
   Future<List<HospitalModel>> getHospitalsFromFirebase() async {
     List<HospitalModel> hospitals = [];
-
     QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('hospitals').get();
-
     for (var doc in snapshot.docs) {
       Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
-
       String name = data!['Name'];
       String specialization = data['Specialization'];
       String location = data['Location'];
@@ -60,31 +49,25 @@ class _HospitalListViewState extends State<HospitalListView> {
     }
     return hospitals;
   }
-
-  // Search function
   void filterHospitals() {
     String searchTerm = _searchController.text.toLowerCase();
     setState(() {
       filteredHospitals = hospitals
           .where((hospital) => hospital.specialization.toLowerCase().contains(searchTerm))
           .toList();
-
       filteredHospitals.addAll(generalHospitals);
     });
   }
-
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _searchController.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     bool isSearching = _searchController.text.isNotEmpty;
     bool listItemsExist = (filteredHospitals.isNotEmpty||!isSearching);
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -107,7 +90,6 @@ class _HospitalListViewState extends State<HospitalListView> {
           ),
         ),
       ),
-
       body: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -158,10 +140,7 @@ class _HospitalListViewState extends State<HospitalListView> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
-
-              //Popular Hospitals
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -173,9 +152,7 @@ class _HospitalListViewState extends State<HospitalListView> {
                         color: Color(0xFF5E1A84)
                     ),
                   ),
-
                   const Spacer(),
-
                   InkWell(
                     onTap: (){
 
@@ -193,7 +170,6 @@ class _HospitalListViewState extends State<HospitalListView> {
                   )
                 ],
               ),
-
               _isLoading? const Center(
                 child: CircularProgressIndicator(),
               ) : Expanded(
@@ -207,7 +183,6 @@ class _HospitalListViewState extends State<HospitalListView> {
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: () async{
-                              print('---------pressed--------');
                               Navigator.push(
                                   context, 
                                 MaterialPageRoute(builder: (context) => HospitalDoctors(hospitalName: isSearching? filteredHospitals[index].name : hospitals[index].name))
