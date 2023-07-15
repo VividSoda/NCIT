@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:umbrella_care/AuthUI/selectionScreen.dart';
 import 'package:umbrella_care/navBar.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
+
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   AnimationController? _animationController;
   Animation<double>? _animation;
+
   @override
   void initState() {
     super.initState();
@@ -37,18 +41,17 @@ class _SplashScreenState extends State<SplashScreen>
           builder: (_) => StreamBuilder<User?>(
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
-                if(snapshot.hasData){
+                if (snapshot.hasData) {
                   return const NavBar();
-                }
-                else{
+                } else {
                   return const SelectionPage();
                 }
-              }
-              ),
+              }),
         ),
       );
     });
   }
+
   @override
   void dispose() {
     SystemChrome.setEnabledSystemUIMode(
@@ -58,6 +61,7 @@ class _SplashScreenState extends State<SplashScreen>
     _animationController?.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
