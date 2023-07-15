@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -64,12 +63,8 @@ class _UploadRecordState extends State<UploadRecord> {
   Future<void> uploadFile() async{
     DateTime dateTime = DateTime.now();
     if(_reportToDisplay==null) return;
-
     final destination = 'reports/$patientId/$_reportName ${dateTime.toString()}';
-
     FirebaseApi.uploadFile(destination, _reportToDisplay!);
-
-    //Add Records to Firebase
     FirebaseApi.submitRecordsSelf(patientId, destination);
   }
   @override
@@ -269,7 +264,6 @@ class _UploadRecordState extends State<UploadRecord> {
                   onPressed: (){
                     if(_pickedReport!=null){
                       uploadFile();
-
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                               backgroundColor: Colors.green,

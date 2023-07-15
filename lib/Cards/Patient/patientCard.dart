@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Doctor/globalPatientReport.dart';
 import 'package:umbrella_care/Models/Patient/patientModel.dart';
-import 'package:umbrella_care/Doctor/otherPatientReport.dart';
 
 class PatientCard extends StatelessWidget {
   final PatientInfo patient;

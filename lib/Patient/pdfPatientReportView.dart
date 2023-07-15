@@ -27,6 +27,7 @@ class _PdfPatientReportViewState extends State<PdfPatientReportView> {
       for(int i = 0; i < patientRecords.length; i++){
         Map<String,String> pdfDetails = await fetchPdf(patientRecords[i]);
         String dateString = pdfDetails['date']!;
+
         PdfModel pdfModel = PdfModel(
             name: pdfDetails['name']!,
             path: pdfDetails['path']!,

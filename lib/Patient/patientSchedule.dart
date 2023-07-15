@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dotted_line/dotted_line.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -20,7 +19,6 @@ class _PatientScheduleState extends State<PatientSchedule> {
   final currentUser = FirebaseAuth.instance.currentUser;
   List<ButtonModel> buttons = [];
   bool _isButtonLoading = true;
-  bool _isScheduleLoading = true;
   List<DoctorAppointmentInfo> appointments = [];
   final DateTime _currentDate = DateTime.now();
   Future<List<ButtonModel>> getButtonsFromFirebase() async {
@@ -59,8 +57,8 @@ class _PatientScheduleState extends State<PatientSchedule> {
     List<DoctorAppointmentInfo> appointments = [];
     final appointment = await FirebaseFirestore.instance.collection('patients').doc(currentUser!.uid).collection('appointments').doc(uid);
     DocumentSnapshot<Map<String, dynamic>> snapshot = await appointment.get();
-      Map<String, dynamic> data = snapshot.data()!;
-      Timestamp timestamp = data!['date'];
+    Map<String, dynamic> data = snapshot.data()!;
+    Timestamp timestamp = data!['date'];
       DateTime appointmentDate = timestamp.toDate();
       String doctorId = data['doctor id'];
       int appointmentTime = data['time'];
@@ -81,7 +79,6 @@ class _PatientScheduleState extends State<PatientSchedule> {
       else {
         print('Doctor details not found');
       }
-
       return appointments;
   }
   Future<Map<String, String>?> fetchDoctorDetails(String uid) async{
@@ -103,7 +100,6 @@ class _PatientScheduleState extends State<PatientSchedule> {
     List<DoctorAppointmentInfo> fetchedAppointments = await getAppointmentInfo(uid);
     setState(() {
       appointments = fetchedAppointments;
-      _isScheduleLoading = false;
     });
   }
   @override

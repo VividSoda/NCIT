@@ -41,6 +41,7 @@ class _PdfDoctorReportViewState extends State<PdfDoctorReportView> {
     for(int i = 0; i < patientRecords.length; i++){
       Map<String,String> pdfDetails = await fetchPdf(patientRecords[i]);
       String dateString = pdfDetails['date']!;
+
       PdfModel pdfModel = PdfModel(
           name: pdfDetails['name']!,
           path: pdfDetails['path']!,
@@ -65,9 +66,11 @@ class _PdfDoctorReportViewState extends State<PdfDoctorReportView> {
   static Future<String?> getDownloadUrl(String destination) async {
     try {
       final ref = FirebaseStorage.instance.ref(destination);
+
       final downloadUrl = await ref.getDownloadURL();
       return downloadUrl;
-    } catch (FirebaseException) {
+    }
+    on FirebaseException {
       return null;
     }
   }
