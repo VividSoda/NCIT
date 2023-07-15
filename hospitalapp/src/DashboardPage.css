@@ -1,0 +1,310 @@
+content {
+  position: absolute;
+  width: 582px;
+  height: 132px;
+  left: 28px;
+  top: 25px;
+
+  font-family: "Rounded Mplus 1c";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 39px;
+  line-height: 58px;
+
+  color: #f7f7f7;
+}
+.container3 {
+  justify-content: flex-start;
+
+  position: relative;
+  width: 1800px;
+  height: 1080px;
+  background: linear-gradient(180deg, #7d32ac 0%, #b9abc1 100%);
+}
+.search-container1 {
+  position: relative;
+}
+
+.search-input1 {
+  padding-left: 200px;
+  margin-left: 1400px;
+  margin-top: 50px; /* Adjust the padding to make space for the button */
+  box-sizing: border-box;
+
+  position: absolute;
+  width: 400px;
+  height: 50px;
+  left: -20px;
+  top: -20px;
+
+  background: #ffffff;
+  box-shadow: 5px 2px 9px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+}
+
+.search-button1 {
+  position: absolute;
+  top: 42px;
+  left: 1700px;
+  width: 60px;
+  height: 20px;
+  background-color: #f1f1f1;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  /* Add styles for the search button icon */
+}
+.path {
+  position: absolute;
+  width: 1100.82px;
+  height: 800px;
+  left: 414.18px;
+  top: 171px;
+
+  background: #ffffff;
+  box-shadow: 0px 4px 23px rgba(0, 0, 0, 0.38);
+  border-radius: 33px;
+}
+.path1 {
+  border-image: url("C:\Users\Acer\Desktop\reactapp\hospitalapp\public\Vector.png");
+  color: #7d32ac;
+  position: absolute;
+  width: 300px;
+  height: 246px;
+  right: 740px;
+  top: 100px;
+
+  background: #ffffff;
+  box-shadow: -1px 4px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 13px;
+}
+.path2 {
+  color: #7d32ac;
+  position: absolute;
+  width: 300px;
+  height: 246px;
+  right: 400px;
+  top: 100px;
+
+  background: #ffffff;
+  box-shadow: -1px 4px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 13px;
+}
+.path3 {
+  color: #7d32ac;
+  position: absolute;
+  width: 300px;
+  height: 246px;
+  left: 750px;
+  top: 100px;
+  background: #ffffff;
+  box-shadow: -1px 4px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 13px;
+}
+.path4 {
+  color: #7d32ac;
+  position: absolute;
+  width: 300px;
+  height: 246px;
+  right: 740px;
+  top: 480px;
+
+  background: #ffffff;
+  box-shadow: -1px 4px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 13px;
+}
+.path5 {
+  color: #7d32ac;
+  position: absolute;
+  width: 300px;
+  height: 246px;
+  left: 400px;
+  top: 480px;
+
+  background: #ffffff;
+  box-shadow: -1px 4px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 13px;
+}
+.button-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.button-container button {
+  margin-right: 10px; /* Adjust the spacing between buttons */
+}
+.button1 {
+  box-sizing: border-box;
+
+  position: absolute;
+  width: 307.35px;
+  height: 86px;
+  left: -5px;
+  top: 282px;
+
+  background: #ffffff;
+  border: 4px solid #ffb800;
+  box-shadow: 5px 2px 9px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 50px 50px 0px;
+  color: #7d32ac;
+}
+.button2 {
+  position: absolute;
+  width: 307.35px;
+  height: 86px;
+  left: -5px;
+  top: 398px;
+
+  background: #ffffff;
+  box-shadow: 5px 2px 9px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 25px 0px;
+  color: #7d32ac;
+}
+.button3 {
+  position: absolute;
+  width: 307.35px;
+  height: 86px;
+  left: -5px;
+  top: 514px;
+  background: #ffffff;
+  box-shadow: 5px 2px 9px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 25px 0px;
+  color: #7d32ac;
+}
+.button4 {
+  position: absolute;
+  width: 307.35px;
+  height: 86px;
+  left: -5px;
+  top: 630px;
+
+  background: #ffffff;
+  box-shadow: 5px 2px 9px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 25px 0px;
+  color: #7d32ac;
+}
+.button5 {
+  position: absolute;
+  width: 307.35px;
+  height: 86px;
+  left: -5px;
+  top: 746px;
+
+  background: #ffffff;
+  box-shadow: 5px 2px 9px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 25px 0px;
+  color: #7d32ac;
+}
+.button6 {
+  position: absolute;
+  width: 307.35px;
+  height: 86px;
+  left: -5px;
+  top: 862px;
+
+  background: #ffffff;
+  box-shadow: 5px 2px 9px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 25px 0px;
+  color: #7d32ac;
+}
+.deeper {
+  position: absolute;
+  width: 1790px;
+  height: 0px;
+  border: 6px solid #ffffff;
+  top: 90px;
+}
+text3 {
+  position: absolute;
+  width: 193px;
+  height: 27px;
+  left: 20px;
+  top: 10px;
+
+  font-family: "Sansation";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 27px;
+  /* identical to box height */
+
+  color: #7d32ac;
+}
+text4 {
+  position: absolute;
+  width: 67px;
+  height: 32px;
+  left: 200px;
+  top: 90px;
+
+  font-family: "Sansation";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 29px;
+  line-height: 32px;
+
+  color: #7d32ac;
+}
+img {
+  position: absolute;
+  left: 14.19%;
+  right: 5.19%;
+  top: 20%;
+  bottom: -97%;
+}
+.path2 img {
+  position: absolute;
+  left: 20.19%;
+  right: 15.19%;
+  top: 30%;
+  bottom: -97%;
+}
+.path2 img:last-of-type {
+  position: absolute;
+  left: 27%;
+  right: 20%;
+  top: 25.5%;
+  bottom: 70.83%;
+}
+.path3 img {
+  position: absolute;
+  left: 18.19%;
+  right: 19.19%;
+  top: 20%;
+  bottom: -97%;
+}
+.path3 img:last-of-type {
+  position: absolute;
+  left: 27%;
+  right: 20%;
+  top: 25.5%;
+  bottom: 70.83%;
+}
+.path4 img {
+  position: absolute;
+  left: 18.19%;
+  right: 19.19%;
+  top: 20%;
+  bottom: -97%;
+}
+.path4 img:last-of-type {
+  position: absolute;
+  left: 27%;
+  right: 20%;
+  top: 25.5%;
+  bottom: 70.83%;
+}
+.path5 img {
+  position: absolute;
+  left: 20.19%;
+  right: 15.19%;
+  top: 30%;
+  bottom: -97%;
+}
+.path5 img:last-of-type {
+  position: absolute;
+  left: 27%;
+  right: 20%;
+  top: 25.5%;
+  bottom: 70.83%;
+}

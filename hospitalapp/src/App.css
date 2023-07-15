@@ -1,0 +1,190 @@
+.container {
+  display: flex;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  overflow: hidden;
+position: relative;
+width: 1920px;
+height: 1080px;
+
+background: linear-gradient(90deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+border: 1px solid #006980;
+}
+
+h2 {
+  text-align: center;
+}
+
+.heading {
+  display: flex;
+}
+.header {
+  text-align: center;
+  justify-content: start;
+  display: flex;
+}
+
+.container::before {
+
+  content: "";
+  display: block;
+  position: absolute;
+  width: 147px;
+  height: 162px;
+  left: 8px;
+  top: 12px;
+  background-image: url("C:/Users/Acer/Desktop/reactapp/hospitalapp/public/UmbrellaCare1.png");
+  background-size: cover;
+}
+
+h1{
+  position: absolute;
+  width: 582px;
+  height: 132px;
+  left: 151px;
+  top: 40px;
+  font-family: "Rounded Mplus 1c";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 39px;
+  line-height: 58px;
+  color: #7d32ac;
+}
+
+.column1 {
+  width: 442px;
+  height: 1080px;
+}
+
+.line-input {
+  position: relative;
+  width: 423px;
+  height: 0px;
+  left: 151px;
+  top: 580px;
+  border: 1px solid #985dbd;
+  position: absolute;
+  width: 111px;
+  height: 19px;
+  left: 155px;
+  top: 465px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #7a2caa;
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  margin-bottom: 10px;
+  width: 25%;
+}
+
+.custom-input {
+  position: absolute;
+  width: 71px;
+  height: 19px;
+  left: 155px;
+  top: 549px;
+
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  /* identical to box height */
+
+  text-emphasis-color: #7a2caa;
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  margin-bottom: 10px;
+  width: 25%;
+}
+
+.column2 {
+  margin: auto;
+  position: absolute;
+  width: 1181px;
+  height: 1080px;
+  left: 739px;
+  top: 0px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 5px;
+  background: url("C:/Users/Acer/Desktop/reactapp/hospitalapp/public/national-cancer-institute-NFvdKIhxYlU-unsplash.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.custom-button {
+  position: absolute;
+  width: 175px;
+  height: 46px;
+  left: 391px;
+  top: 610px;
+
+  background: #7d32ac;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+}
+.border {
+  position: absolute;
+  width: 1170px;
+  height: 0px;
+  border: 6px solid #ffffff;
+  top: 90px;
+}
+h13{
+  position: absolute;
+width: 197px;
+height: 40px;
+right: 900px;
+top: 50px;
+font-family: 'Rounded Mplus 1c Bold';
+font-style: normal;
+font-weight: 700;
+font-size: 13px;
+line-height: 19px;
+
+color: #FFFFFF;
+
+}
+h14{
+position: absolute;
+width: 197px;
+height: 40px;
+right: 400px;
+top: 50px;
+
+font-family: 'Rounded Mplus 1c Bold';
+font-style: normal;
+font-weight: 700;
+font-size: 13px;
+line-height: 19px;
+
+color: #FFFFFF;
+}
+h15{
+  position: absolute;
+  width: 197px;
+  height: 40px;
+  left:1050px;
+  top: 50px;
+  
+  font-family: 'Rounded Mplus 1c Bold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 19px;
+  
+  color: #FFFFFF;
+}
+
+
+
+
+
+
+
+
