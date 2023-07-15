@@ -23,7 +23,6 @@ class _HospitalListViewState extends State<HospitalListView> {
   }
   Future<void> fetchHospitals() async {
     List<HospitalModel> fetchedHospitals = await getHospitalsFromFirebase();
-    List<HospitalModel> fetchedGeneralHospitals = [];
     setState(() {
       hospitals = fetchedHospitals;
       generalHospitals = fetchedHospitals.where(
