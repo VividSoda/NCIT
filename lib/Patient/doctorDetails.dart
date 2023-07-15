@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:umbrella_care/BlankRedirect.dart';
 import 'package:umbrella_care/Constants/colors.dart';
 import 'package:umbrella_care/Patient/appointmentView.dart';
 
@@ -24,34 +23,24 @@ class _DoctorDetailsState extends State<DoctorDetails> {
   double _averageRating = 0;
   String _imgUrl = '';
 
-  //get user details form firebase
   Future<DocumentSnapshot<Map<String, dynamic>>?> fetchDoctorDetails() async {
-    print(widget.uid+'dafasdfadfsa');
-
-    final userDoc = FirebaseFirestore.instance.collection('doctors').doc(widget.uid);
-
+    final userDoc =
+        FirebaseFirestore.instance.collection('doctors').doc(widget.uid);
     DocumentSnapshot<Map<String, dynamic>> snapshot = await userDoc.get();
-
-    print('+++++++++++++++++++${snapshot.id}');
-
-    if(snapshot.exists){
+    if (snapshot.exists) {
       Map<String, dynamic> data = snapshot.data()!;
-
       _name = data['name'];
       _qualifications = data['qualifications'];
       _affiliations = data['affiliations'];
       _experience = data['experience'];
       _specialization = data['specialization'];
       _noOfCheckedPatients = data['no_of_checked_patients'];
-
-      if(data.containsKey('averageRating')){
+      if (data.containsKey('averageRating')) {
         _averageRating = data['averageRating'];
       }
-
-      if(data.containsKey('img url')){
+      if (data.containsKey('img url')) {
         _imgUrl = data['img url'];
       }
-
       setState(() {
         _isLoading = false;
       });
@@ -69,479 +58,385 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.uid);
     return Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF5E1A84),
-                Color(0xFF5E1A84),
-                Colors.white,
-                Colors.white
-              ],
-              stops: [0.0, 0.25, 0.25, 1.0],
-            ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF5E1A84),
+              Color(0xFF5E1A84),
+              Colors.white,
+              Colors.white
+            ],
+            stops: [0.0, 0.25, 0.25, 1.0],
           ),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            child: _isLoading? const Center(
-              child: CircularProgressIndicator(),
-            ) : Column(
-              children: [
-                const SizedBox(height: 50),
-
-                //Back Button
-                Row(
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          child: _isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Column(
                   children: [
-                    Container(
-                      width: 44,
-                      height: 44,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(15)
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        icon: const Icon(
-                            Icons.arrow_back_sharp,
-                            color: Colors.white
+                    const SizedBox(height: 50),
+                    Row(
+                      children: [
+                        Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: const Icon(Icons.arrow_back_sharp,
+                                color: Colors.white),
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: 60),
+                        const Text(
+                          'Details',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
+                        )
+                      ],
                     ),
-
-                    const SizedBox(width: 60),
-
-                    const Text(
-                      'Details',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white
-                      ),
-                    )
-                  ],
-                ),
-
-                const SizedBox(height: 30),
-
-                //Profile Container
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      width: 319,
-                      height: 109,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                offset: const Offset(0, 3),
-                                blurRadius: 6.0,
-                                spreadRadius: 2.0)
-                          ]
-                      ),
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          //Image
-                          SizedBox(
-                            width: 77,
-                            height: 77,
-                            child: ClipRRect(
+                    const SizedBox(height: 30),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          width: 319,
+                          height: 109,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(30),
-                              child: _imgUrl!=''? Image.network(
-                                _imgUrl
-                              ) : Image.asset(
-                                  'assets/doctorImages/doctorPic.png'
-                              ),
-                            )
-                            // Image.asset(
-                            //   'assets/doctorImages/doctorProfile.png',
-                            //   fit: BoxFit.cover,
-                            // ),
-                          ),
-
-                          const SizedBox(width: 20),
-
-
-                           Flexible(
-                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                //Name
-                                Text(
-                                  _name!,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(0xFF5E1A84)
-                                  ),
-                                ),
-
-                                const SizedBox(height: 10),
-
-                                //Speciality
-                                Text(
-                                  _specialization!,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xFF5E1A84)
-                                  ),
-                                ),
-
-                                const SizedBox(height: 10),
-
-                                //affiliation
-                                Flexible(
-                                  child: Text(
-                                    _affiliations!,
-                                    softWrap: true,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                        color: Color(0xFF5E1A84)
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    offset: const Offset(0, 3),
+                                    blurRadius: 6.0,
+                                    spreadRadius: 2.0)
+                              ]),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                  width: 77,
+                                  height: 77,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(30),
+                                    child: _imgUrl != ''
+                                        ? Image.network(_imgUrl)
+                                        : Image.asset(
+                                            'assets/doctorImages/doctorPic.png'),
+                                  )),
+                              const SizedBox(width: 20),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      _name!,
+                                      softWrap: true,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xFF5E1A84)),
                                     ),
-                                  ),
-                                ),
-                              ],
-                          ),
-                           ),
-
-                          // const Spacer()
-                        ],
-                      )
-                  ),
-                ),
-
-                const SizedBox(height: 50),
-
-                Expanded(
-                    child: Container(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                //Experience
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(20),
-                                    width: 98,
-                                    height: 95,
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xFFE8EBED),
-                                        borderRadius: BorderRadius.circular(20)
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      _specialization!,
+                                      softWrap: true,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xFF5E1A84)),
                                     ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        //Exp
-                                        const Text(
-                                          'Exp.',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              color: primary
-                                          ),
-                                        ),
-
-                                        const SizedBox(height: 10),
-
-                                        //Exp
-                                        Text(
-                                          '$_experience yr',
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700,
-                                              color: primary
-                                          ),
-                                        ),
-                                      ],
+                                    const SizedBox(height: 10),
+                                    Flexible(
+                                      child: Text(
+                                        _affiliations!,
+                                        softWrap: true,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xFF5E1A84)),
+                                      ),
                                     ),
-                                  ),
-                                ),
-
-                                //No of checked patients
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(20),
-                                    width: 98,
-                                    height: 95,
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xFFE8EBED),
-                                        borderRadius: BorderRadius.circular(20)
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        //Exp
-                                        const Text(
-                                          'Patients',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              color: primary
-                                          ),
-                                        ),
-
-                                        const SizedBox(height: 10),
-
-                                        //Exp
-                                        Text(
-                                          _noOfCheckedPatients.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700,
-                                              color: primary
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-
-                                //Rating
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(20),
-                                    width: 98,
-                                    height: 95,
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xFFE8EBED),
-                                        borderRadius: BorderRadius.circular(20)
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        //Rating
-                                        const Text(
-                                          'Rating',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              color: primary
-                                          ),
-                                        ),
-
-                                        const SizedBox(height: 10),
-
-                                        //Rating
-                                        Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.star,
-                                              color: starFill,
-                                              size: 18,
-                                            ),
-
-                                            const SizedBox(width: 5),
-
-                                            Text(
-                                              '$_averageRating',
-                                              style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: primary
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 30),
-
-                            //About
-                            const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'About',
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                    color: primary
+                                  ],
                                 ),
                               ),
-                            ),
 
-                            const SizedBox(height: 10),
-
-                            //About
-                             Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                              _qualifications!,
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: primary
-                                ),
-                              ),
-                            ),
-
-                            const SizedBox(height: 10),
-
-                            //About
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                _affiliations!,
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: primary
-                                ),
-                              ),
-                            ),
-
-                            const SizedBox(height: 10),
-
-                            //About
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                _specialization!,
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: primary
-                                ),
-                              ),
-                            ),
-
-                            const SizedBox(height: 30),
-
-                            //Availability
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
-                              width: MediaQuery.of(context).size.width,
-                              height: 85,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: const Color(0xFFD7DEEA)
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 56,
-                                    height: 56,
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xFFE8EBED),
-                                        borderRadius: BorderRadius.circular(20)
-                                    ),
-                                    child: const Center(
-                                        child: Icon(
-                                            Icons.watch_later,
-                                          color: primary,
-                                        )
-                                    ),
-                                  ),
-
-                                  const SizedBox(width: 20),
-
-                                  const Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                              // const Spacer()
+                            ],
+                          )),
+                    ),
+                    const SizedBox(height: 50),
+                    Expanded(
+                        child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  padding: const EdgeInsets.all(20),
+                                  width: 98,
+                                  height: 95,
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFFE8EBED),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        'Availability',
+                                      //Exp
+                                      const Text(
+                                        'Exp.',
                                         style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400,
-                                            color: primary
-                                        ),
+                                            color: primary),
                                       ),
-
-                                      SizedBox(height: 10),
-
+                                      const SizedBox(height: 10),
                                       Text(
-                                        '10 AM - 5 PM',
-                                        style: TextStyle(
-                                            fontSize: 17,
+                                        '$_experience yr',
+                                        style: const TextStyle(
+                                            fontSize: 18,
                                             fontWeight: FontWeight.w700,
-                                            color: primary
-                                        ),
+                                            color: primary),
                                       ),
                                     ],
                                   ),
-
-                                  const Expanded(
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Icon(
-                                          Icons.arrow_forward_ios,
-                                        color: primary,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-
-                            const SizedBox(height: 30),
-
-                            //Book now button
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 56,
-                              child: ElevatedButton(
-                                onPressed: (){
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => AppointmentView(uid: widget.uid,))
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: primary,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10)
-                                    )
                                 ),
-                                child: const Text(
-                                  'Book Now',
-                                  style: TextStyle(
-                                      fontSize: 18
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  padding: const EdgeInsets.all(20),
+                                  width: 98,
+                                  height: 95,
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFFE8EBED),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      //Exp
+                                      const Text(
+                                        'Patients',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            color: primary),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        _noOfCheckedPatients.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w700,
+                                            color: primary),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            )
-                          ],
-                        ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  padding: const EdgeInsets.all(20),
+                                  width: 98,
+                                  height: 95,
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFFE8EBED),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      //Rating
+                                      const Text(
+                                        'Rating',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            color: primary),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.star,
+                                            color: starFill,
+                                            size: 18,
+                                          ),
+                                          const SizedBox(width: 5),
+                                          Text(
+                                            '$_averageRating',
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700,
+                                                color: primary),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 30),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'About',
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  color: primary),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              _qualifications!,
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: primary),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              _affiliations!,
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: primary),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              _specialization!,
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: primary),
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            width: MediaQuery.of(context).size.width,
+                            height: 85,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border:
+                                  Border.all(color: const Color(0xFFD7DEEA)),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 56,
+                                  height: 56,
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFFE8EBED),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: const Center(
+                                      child: Icon(
+                                    Icons.watch_later,
+                                    color: primary,
+                                  )),
+                                ),
+                                const SizedBox(width: 20),
+                                const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Availability',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          color: primary),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      '10 AM - 5 PM',
+                                      style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700,
+                                          color: primary),
+                                    ),
+                                  ],
+                                ),
+                                const Expanded(
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: primary,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 56,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AppointmentView(
+                                              uid: widget.uid,
+                                            )));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: primary,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10))),
+                              child: const Text(
+                                'Book Now',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                    )
-                )
-              ],
-            ),
-          ),
+                    ))
+                  ],
+                ),
         ),
+      ),
     );
   }
 }

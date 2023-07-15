@@ -14,51 +14,40 @@ class DoctorSearch extends StatefulWidget {
 }
 
 class _DoctorSearchState extends State<DoctorSearch> {
-  List<DoctorInfo> doctors =  [];
-  List<DoctorInfo> filteredDoctors =  [];
+  List<DoctorInfo> doctors = [];
+  List<DoctorInfo> filteredDoctors = [];
   bool _isLoading = true;
   final TextEditingController _searchController = TextEditingController();
-  // List<DoctorAverageReview> reviews = [];
-  // List<DoctorAverageReview> filteredReviews = [];
   bool _isCategorySelected = false;
   String _category = '';
 
-  //get all doctor list from firebase
   Future<List<DoctorInfo>> getDoctorsFromFirebase() async {
     List<DoctorInfo> doctors = [];
-
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('doctors').get();
-
+    QuerySnapshot snapshot =
+        await FirebaseFirestore.instance.collection('doctors').get();
     for (var doc in snapshot.docs) {
       Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
-      // bool validity = data!['validity'];
-
-      if(data!.containsKey('validity')){
-        print(doc.id);
+      if (data!.containsKey('validity')) {
         String uid = doc.id;
         String name = data['name'];
         String nmcNo = data['nmc no'];
         String contact = data['contact'];
         String qualifications = data['qualifications'];
         String affiliations = data['affiliations'];
-        String experience =  data['experience'];
+        String experience = data['experience'];
         String specialization = data['specialization'];
         bool validity = data['validity'];
         String imgUrl = '';
-
-        if(data.containsKey('img url')){
+        if (data.containsKey('img url')) {
           imgUrl = data['img url'];
         }
-
         double averageRating = 0;
         int noOfReviews = 0;
-
-        if(data.containsKey('averageRating')){
+        if (data.containsKey('averageRating')) {
           dynamic avg = data['averageRating'];
           averageRating = avg.toDouble();
           noOfReviews = data['noOfReviews'];
         }
-
         DoctorInfo doctorInfo = DoctorInfo(
             uid: uid,
             name: name,
@@ -69,24 +58,15 @@ class _DoctorSearchState extends State<DoctorSearch> {
             experience: experience,
             specialization: specialization,
             validity: validity,
-          imgUrl: imgUrl,
-          avgRating: averageRating,
-          noOfReviews: noOfReviews
-        );
+            imgUrl: imgUrl,
+            avgRating: averageRating,
+            noOfReviews: noOfReviews);
         doctors.add(doctorInfo);
       }
     }
     return doctors;
   }
 
-  // //get review details
-  // Future<Map<String,String>> getReviewDetails(String docId){
-  //   String noOfReviews;
-  //   String avgRating;
-  //   return
-  // }
-
-  //assign doctor list
   Future<void> fetchDoctors() async {
     List<DoctorInfo> fetchedDoctors = await getDoctorsFromFirebase();
     setState(() {
@@ -95,12 +75,12 @@ class _DoctorSearchState extends State<DoctorSearch> {
     });
   }
 
-  // Search function
   void filterDoctors() {
     String searchTerm = _searchController.text.toLowerCase();
     setState(() {
       filteredDoctors = doctors
-          .where((doctor) => doctor.specialization.toLowerCase().contains(searchTerm))
+          .where((doctor) =>
+              doctor.specialization.toLowerCase().contains(searchTerm))
           .toList();
     });
   }
@@ -110,105 +90,58 @@ class _DoctorSearchState extends State<DoctorSearch> {
     // TODO: implement initState
     super.initState();
     fetchData();
-    // assignReviewData();
-    // fetchDoctors();
   }
 
-  //get review data
-  Future<List<DoctorAverageReview>> getReviewData() async{
+  Future<List<DoctorAverageReview>> getReviewData() async {
     List<DoctorAverageReview> reviews = [];
     final doctors = FirebaseFirestore.instance.collection('doctors');
-
     QuerySnapshot snapshot = await doctors.get();
-
-    for(var doc in snapshot.docs){
+    for (var doc in snapshot.docs) {
       Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
-
       String specialization = data!['specialization'];
       String affiliations = data['affiliations'];
       String uid = doc.id;
 
-      if(data.containsKey('averageRating')){
-        print('=========exists===');
-        print(doc.id);
-        //double averageRating = data['averageRating'];
-
+      if (data.containsKey('averageRating')) {
         dynamic avgRating = data['averageRating'];
         double averageRating = avgRating.toDouble();
-
-        if(averageRating.runtimeType == int){
-          print('-----${doc.id}');
-        }
         int noOfReviews = data['noOfReviews'];
-        // String specialization = data['specialization'];
-
         DoctorAverageReview doctorAverageReview = DoctorAverageReview(
             averageRating: averageRating,
             noOfReviews: noOfReviews,
-          specialization: specialization,
-          affiliations: affiliations,
-          uid: uid
-        );
+            specialization: specialization,
+            affiliations: affiliations,
+            uid: uid);
         reviews.add(doctorAverageReview);
-      }
-
-      else{
-        //String specialization = data['specialization'];
-
+      } else {
         DoctorAverageReview doctorAverageReview = DoctorAverageReview(
             specialization: specialization,
-          affiliations: affiliations,
-          uid: uid
-        );
+            affiliations: affiliations,
+            uid: uid);
         reviews.add(doctorAverageReview);
       }
     }
     return reviews;
   }
 
-  // //assign review data
-  // Future<void> assignReviewData() async {
-  //   List<DoctorAverageReview> fetchedReviews = await getReviewData();
-  //   setState(() {
-  //     reviews = fetchedReviews;
-  //   });
-  // }
-  //
-  // // Search function
-  // void filterReviews() {
-  //   String searchTerm = _searchController.text.toLowerCase();
-  //   setState(() {
-  //     filteredReviews = reviews
-  //         .where((review) => review.specialization.toLowerCase().contains(searchTerm))
-  //         .toList();
-  //   });
-  // }
-
-  //fetch data
-  void fetchData() async{
-    // await assignReviewData();
+  void fetchData() async {
     fetchDoctors();
   }
 
-  //filter data
   void filterData() {
-    // filterReviews();
     filterDoctors();
   }
 
   @override
   Widget build(BuildContext context) {
     bool isSearching = _searchController.text.isNotEmpty;
-    bool listItemsExist = (filteredDoctors.isNotEmpty||!isSearching);
-
+    bool listItemsExist = (filteredDoctors.isNotEmpty || !isSearching);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             const SizedBox(height: 50),
-
-            //Back Button
             Row(
               children: [
                 Container(
@@ -216,48 +149,36 @@ class _DoctorSearchState extends State<DoctorSearch> {
                   height: 44,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(15)
-                  ),
+                      borderRadius: BorderRadius.circular(15)),
                   child: IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    icon: const Icon(
-                        Icons.arrow_back,
-                        color: Color(0xFF5E1A84)
-                    ),
+                    icon:
+                        const Icon(Icons.arrow_back, color: Color(0xFF5E1A84)),
                   ),
                 ),
-
                 const SizedBox(width: 60),
-
                 const Text(
                   'Search Results',
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF5E1A84)
-                  ),
+                      color: Color(0xFF5E1A84)),
                 )
               ],
             ),
-
             const SizedBox(height: 30),
-
-            //Search
             Container(
               width: MediaQuery.of(context).size.width,
               height: 56,
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                      color: const Color(0xFF5E1A84)
-                  )
-              ),
+                  border: Border.all(color: const Color(0xFF5E1A84))),
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 5, horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 child: Row(
                   children: [
                     Expanded(
@@ -270,8 +191,7 @@ class _DoctorSearchState extends State<DoctorSearch> {
                             ),
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none
-                        ),
+                            disabledBorder: InputBorder.none),
                         controller: _searchController,
                         onChanged: (value) {
                           //filterDoctors();
@@ -283,108 +203,110 @@ class _DoctorSearchState extends State<DoctorSearch> {
                     IconButton(
                         onPressed: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const FilterCategories())
-                          ).then((category) {
-                            print(category+'--------------');
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const FilterCategories()))
+                              .then((category) {
+                            print(category + '--------------');
                             setState(() {
                               _category = category;
                               _isCategorySelected = true;
                             });
                           });
                         },
-                        icon: Image.asset(
-                            'assets/logos/Filter.png'
-                        )
-                    ),
+                        icon: Image.asset('assets/logos/Filter.png')),
                   ],
                 ),
               ),
             ),
-
             const SizedBox(height: 20),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Text(
                   'Popular Doctors',
                   style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF5E1A84)
-                  ),
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF5E1A84)),
                 ),
-
                 const Spacer(),
-
                 InkWell(
-                  onTap: (){
-
-                  },
+                  onTap: () {},
                   child: const Text(
                     'See All',
                     style: TextStyle(
-                      color: Color(0xFF5E1A84),
-                      decoration: TextDecoration.underline,
-                      fontWeight: FontWeight.w400,
-                      decorationThickness: 1,
-                      fontSize: 14
-                    ),
+                        color: Color(0xFF5E1A84),
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.w400,
+                        decorationThickness: 1,
+                        fontSize: 14),
                   ),
                 )
               ],
             ),
-
             const SizedBox(height: 20),
-
-            //Doctor List
-            _isLoading? const Center(
-              child: CircularProgressIndicator(),
-            ) : Expanded(
-              child: SingleChildScrollView(
-                child: listItemsExist? Column(
-                  children: [
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount:isSearching? filteredDoctors.length : doctors.length ,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () async{
-                            print('presssed++++');
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => DoctorDetails(uid: isSearching? filteredDoctors[index].uid : doctors[index].uid))
-                            );
-                          },
-                          child: Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                            child:isSearching? DoctorCard(
-                              doctor: filteredDoctors[index],
-                              //review: filteredReviews[index]
-                            ) : DoctorCard(
-                                doctor: doctors[index],
-                                //review: reviews[index]
+            _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Expanded(
+                    child: SingleChildScrollView(
+                      child: listItemsExist
+                          ? Column(
+                              children: [
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: isSearching
+                                      ? filteredDoctors.length
+                                      : doctors.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DoctorDetails(
+                                                        uid: isSearching
+                                                            ? filteredDoctors[
+                                                                    index]
+                                                                .uid
+                                                            : doctors[index]
+                                                                .uid)));
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 10),
+                                        child: isSearching
+                                            ? DoctorCard(
+                                                doctor: filteredDoctors[index],
+                                                //review: filteredReviews[index]
+                                              )
+                                            : DoctorCard(
+                                                doctor: doctors[index],
+                                                //review: reviews[index]
+                                              ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            )
+                          : const Center(
+                              child: Text(
+                                'No results found',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF5E1A84)),
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ) : const Center(
-                  child: Text(
-                      'No results found',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF5E1A84)
                     ),
                   ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
